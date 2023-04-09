@@ -1,3 +1,5 @@
+import MapFrame from "map/MapFrame";
+
 export default function App() {
-  return <></>
+  return <MapFrame />
 }

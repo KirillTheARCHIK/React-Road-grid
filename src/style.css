@@ -1,0 +1,7 @@
+body {
+  margin: 0;
+}
+
+.background-cell {
+  background-image: url(./images/Cell.svg);
+}
