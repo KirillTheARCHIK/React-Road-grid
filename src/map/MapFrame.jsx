@@ -59,6 +59,8 @@ export const MapFrame = () => {
     });
   }, []);
 
+  console.log(Object.keys(chunks).length);
+
   return (
     <ViewChunksCoordsContext.Provider
       value={{

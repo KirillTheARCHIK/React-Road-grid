@@ -4,7 +4,7 @@ import { CHUNK_SIZE_IN_PX, debounce } from "const";
 import { FrameSizeContext, ViewChunksCoordsContext } from "./MapFrame";
 
 const Map = ({ chunks = [[]] }) => {
-  const [currentCoords, setCurrentCoords] = useState({ x: 0, y: 0 });
+  const [currentCoords, setCurrentCoords] = useState({ x: -683, y: 610 });
   const { frameSize, setFrameSize } = useContext(FrameSizeContext);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -22,18 +22,6 @@ const Map = ({ chunks = [[]] }) => {
       frameSize,
     });
     const newViewChunksCoords = {
-      // leftXChunkIndex: Math.floor(
-      //   (currentCoords.x - frameSize.x / 2) / CHUNK_SIZE_IN_PX
-      // ),
-      // rightXChunkIndex: Math.floor(
-      //   (currentCoords.x + frameSize.x / 2) / CHUNK_SIZE_IN_PX
-      // ),
-      // bottonYChunkIndex: Math.floor(
-      //   (currentCoords.y - frameSize.y / 2) / CHUNK_SIZE_IN_PX
-      // ),
-      // topYChunkIndex: Math.floor(
-      //   (currentCoords.y + frameSize.y / 2) / CHUNK_SIZE_IN_PX
-      // ),
       leftXChunkIndex: Math.floor(currentCoords.x / CHUNK_SIZE_IN_PX),
       rightXChunkIndex: Math.floor(
         (currentCoords.x + frameSize.x) / CHUNK_SIZE_IN_PX
@@ -52,10 +40,9 @@ const Map = ({ chunks = [[]] }) => {
     }
   }
 
-  let setCurrentCoordsF = debounce(setCurrentCoords, 400);
-
   return (
     <div
+      id="map"
       style={{
         position: "relative",
         cursor: isDragging ? "grabbing" : "grab",
@@ -79,12 +66,11 @@ const Map = ({ chunks = [[]] }) => {
         setIsDragging(true);
       }}
       onMouseMove={(event) => {
-        // console.log(isDragging);
         if (isDragging) {
-          setCurrentCoordsF(currentCoords);
-          let newCoords = currentCoords;
-          newCoords.x -= event.movementX;
-          newCoords.y += event.movementY;
+          setCurrentCoords({
+            x: currentCoords.x - event.movementX,
+            y: currentCoords.y + event.movementY,
+          });
         }
       }}
     >
