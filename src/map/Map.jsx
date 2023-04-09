@@ -1,58 +1,91 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Chunk from "./Chunk";
-import { CHUNK_SIZE_IN_PX } from "const";
+import { CHUNK_SIZE_IN_PX, debounce } from "const";
 import { FrameSizeContext, ViewChunksCoordsContext } from "./MapFrame";
 
 const Map = ({ chunks = [[]] }) => {
-  const [currentCords, setCurrentCords] = useState({ x: 0, y: 0 });
+  const [currentCoords, setCurrentCoords] = useState({ x: 0, y: 0 });
   const { frameSize, setFrameSize } = useContext(FrameSizeContext);
+  const [isDragging, setIsDragging] = useState(false);
 
   const { viewChunksCoords, setViewChunksCoords } = useContext(
     ViewChunksCoordsContext
   );
 
   useEffect(() => {
-
-      refreshBounds();
+    refreshBounds();
   }, [frameSize]);
 
   function refreshBounds() {
     console.log({
-      currentCords,
+      currentCoords,
       frameSize,
     });
     const newViewChunksCoords = {
-      leftXChunkIndex: Math.floor(
-        (currentCords.x - frameSize.x / 2) / CHUNK_SIZE_IN_PX
-      ),
+      // leftXChunkIndex: Math.floor(
+      //   (currentCoords.x - frameSize.x / 2) / CHUNK_SIZE_IN_PX
+      // ),
+      // rightXChunkIndex: Math.floor(
+      //   (currentCoords.x + frameSize.x / 2) / CHUNK_SIZE_IN_PX
+      // ),
+      // bottonYChunkIndex: Math.floor(
+      //   (currentCoords.y - frameSize.y / 2) / CHUNK_SIZE_IN_PX
+      // ),
+      // topYChunkIndex: Math.floor(
+      //   (currentCoords.y + frameSize.y / 2) / CHUNK_SIZE_IN_PX
+      // ),
+      leftXChunkIndex: Math.floor(currentCoords.x / CHUNK_SIZE_IN_PX),
       rightXChunkIndex: Math.floor(
-        (currentCords.x + frameSize.x / 2) / CHUNK_SIZE_IN_PX
+        (currentCoords.x + frameSize.x) / CHUNK_SIZE_IN_PX
       ),
       bottonYChunkIndex: Math.floor(
-        (currentCords.y - frameSize.y / 2) / CHUNK_SIZE_IN_PX
+        (currentCoords.y - frameSize.y) / CHUNK_SIZE_IN_PX
       ),
-      topYChunkIndex: Math.floor(
-        (currentCords.y + frameSize.y / 2) / CHUNK_SIZE_IN_PX
-      ),
+      topYChunkIndex: Math.floor(currentCoords.y / CHUNK_SIZE_IN_PX),
     };
-    if (viewChunksCoords != newViewChunksCoords) {
+    if (
+      Object.keys(newViewChunksCoords).some(
+        (key) => viewChunksCoords[key] != newViewChunksCoords[key]
+      )
+    ) {
       setViewChunksCoords(newViewChunksCoords);
     }
   }
 
+  let setCurrentCoordsF = debounce(setCurrentCoords, 400);
+
   return (
     <div
       style={{
-        cursor: "grab",
+        position: "relative",
+        cursor: isDragging ? "grabbing" : "grab",
         width: chunks[0]?.length * CHUNK_SIZE_IN_PX,
         height: chunks.length * CHUNK_SIZE_IN_PX,
+        left: -(
+          currentCoords.x -
+          viewChunksCoords.leftXChunkIndex * CHUNK_SIZE_IN_PX
+        ),
+        top:
+          currentCoords.y -
+          (viewChunksCoords.topYChunkIndex + 1) * CHUNK_SIZE_IN_PX,
       }}
       draggable
-      onDragEnd={() => {
+      onMouseUp={() => {
         refreshBounds();
+        setIsDragging(false);
       }}
-      onDragStart={(event)=>{
+      onDragStart={(event) => {
         event.preventDefault();
+        setIsDragging(true);
+      }}
+      onMouseMove={(event) => {
+        // console.log(isDragging);
+        if (isDragging) {
+          setCurrentCoordsF(currentCoords);
+          let newCoords = currentCoords;
+          newCoords.x -= event.movementX;
+          newCoords.y += event.movementY;
+        }
       }}
     >
       {chunks.map((chunkRow) => {

@@ -2,7 +2,12 @@ import React, { useState, useEffect, createContext } from "react";
 import Map from "./Map";
 import { CHUNK_SIZE_IN_PX } from "const";
 
-export const ViewChunksCoordsContext = createContext({});
+export const ViewChunksCoordsContext = createContext({
+  leftXChunkIndex: 0,
+  rightXChunkIndex: 0,
+  bottonYChunkIndex: 0,
+  topYChunkIndex: 0,
+});
 export const FrameSizeContext = createContext({
   x: 0,
   y: 0,

@@ -10,7 +10,7 @@ const Chunk = ({info}) => {
         width: CHUNK_SIZE_IN_PX,
         height: CHUNK_SIZE_IN_PX,
         outline: "red solid 1px",
-        display: 'flex center center'
+        fontSize: '40px',
       }}
     >
       {info.coords}
