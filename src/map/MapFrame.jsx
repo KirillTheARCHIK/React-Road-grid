@@ -1,6 +1,8 @@
 import React, { useState, useEffect, createContext } from "react";
 import Map from "./Map";
 import { CHUNK_SIZE_IN_PX } from "const";
+import ToolPanel from "./tools/ToolPanel";
+import { TOOLS } from "tools";
 
 export const ViewChunksCoordsContext = createContext({
   leftXChunkIndex: 0,
@@ -12,6 +14,7 @@ export const FrameSizeContext = createContext({
   x: 0,
   y: 0,
 });
+export const ToolContext = createContext(null);
 
 export const MapFrame = () => {
   const [viewChunksCoords, setViewChunksCoords] = useState({});
@@ -21,6 +24,10 @@ export const MapFrame = () => {
   });
   const [chunks, setChunks] = useState({});
   const [viewChunks, setViewChunks] = useState([[]]);
+  const [toolContext, setToolContext] = useState({
+    selectedTool: null,
+    tools: TOOLS,
+  });
 
   useEffect(() => {
     let newChunks = chunks;
@@ -59,8 +66,6 @@ export const MapFrame = () => {
     });
   }, []);
 
-  console.log(Object.keys(chunks).length);
-
   return (
     <ViewChunksCoordsContext.Provider
       value={{
@@ -74,15 +79,31 @@ export const MapFrame = () => {
           setFrameSize,
         }}
       >
-        <div
-          style={{
-            width: frameSize.x,
-            height: frameSize.y,
-            overflow: "hidden",
+        <ToolContext.Provider
+          value={{
+            toolContext,
+            setToolContext,
           }}
         >
-          <Map chunks={viewChunks} />
-        </div>
+          <div
+            style={{
+              width: frameSize.x,
+              height: frameSize.y,
+              overflow: "hidden",
+            }}
+          >
+            <Map chunks={viewChunks} />
+            <div
+              style={{
+                position: "absolute",
+                left: "50px",
+                bottom: "50px",
+              }}
+            >
+              <ToolPanel />
+            </div>
+          </div>
+        </ToolContext.Provider>
       </FrameSizeContext.Provider>
     </ViewChunksCoordsContext.Provider>
   );
