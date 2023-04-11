@@ -1,5 +1,6 @@
 export const ROAD = {
   name: 'road',
+  label: 'Дорога',
 }
 
 export const TOOLS = {

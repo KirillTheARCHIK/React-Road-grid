@@ -29,6 +29,13 @@ export const MapFrame = () => {
     tools: TOOLS,
   });
 
+  function setSelectedTool (selectedTool){
+    setToolContext({
+      ...toolContext,
+      selectedTool,
+    })
+  }
+
   useEffect(() => {
     let newChunks = chunks;
     let newViewChunks = [];
@@ -83,6 +90,7 @@ export const MapFrame = () => {
           value={{
             toolContext,
             setToolContext,
+            setSelectedTool,
           }}
         >
           <div

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { ToolButton } from "./ToolButton";
 
 const ToolPanel = () => {
-  const {toolContext} = useContext(ToolContext);
+  const {toolContext, setSelectedTool} = useContext(ToolContext);
 
   console.log(toolContext);
 
@@ -20,12 +20,11 @@ const ToolPanel = () => {
       }}
     >
       {Object.keys(toolContext.tools).map((key) => {
-        return <ToolButton toolInfo={toolContext.tools[key]} />;
+        const tool = toolContext.tools[key];
+        return <ToolButton toolInfo={tool} isSelected={tool?.name == toolContext?.selectedTool?.name} setSelectedTool={setSelectedTool} />;
       })}
     </div>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
 
 export default ToolPanel;
