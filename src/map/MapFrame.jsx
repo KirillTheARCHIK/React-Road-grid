@@ -29,11 +29,20 @@ export const MapFrame = () => {
     tools: TOOLS,
   });
 
-  function setSelectedTool (selectedTool){
+  function setSelectedTool(selectedTool) {
     setToolContext({
       ...toolContext,
       selectedTool,
-    })
+    });
+  }
+
+  function incrementClickIndex(selectedTool) {
+    if (selectedTool) {
+      setSelectedTool({
+        ...selectedTool,
+        currentClickIndex: selectedTool.currentClickIndex + 1,
+      });
+    }
   }
 
   useEffect(() => {
@@ -91,6 +100,7 @@ export const MapFrame = () => {
             toolContext,
             setToolContext,
             setSelectedTool,
+            incrementClickIndex,
           }}
         >
           <div

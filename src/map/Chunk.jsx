@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { ToolContext } from "./MapFrame";
 
 const Chunk = ({ info }) => {
-  const { toolContext, setSelectedTool } = useContext(ToolContext);
+  const { toolContext, setSelectedTool, incrementClickIndex } = useContext(ToolContext);
 
   return (
     <div
@@ -25,9 +25,16 @@ const Chunk = ({ info }) => {
 
         console.log(toolContext.selectedTool);
         toolContext.selectedTool?.onClick({
-          clickIndex: toolContext.selectedTool?.currentClickIndex,
+          clickIndex: toolContext.selectedTool?.currentClickIndex+1,
           cellCoords: { x, y },
         });
+        incrementClickIndex(toolContext.selectedTool);
+        
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setSelectedTool(null);
+        console.log({ toolContext });
       }}
     >
       {info.coords}

@@ -17,10 +17,10 @@ const Map = ({ chunks = [[]] }) => {
   }, [frameSize]);
 
   function refreshBounds() {
-    console.log({
-      currentCoords,
-      frameSize,
-    });
+    // console.log({
+    //   currentCoords,
+    //   frameSize,
+    // });
     const newViewChunksCoords = {
       leftXChunkIndex: Math.floor(currentCoords.x / CHUNK_SIZE_IN_PX),
       rightXChunkIndex: Math.floor(
