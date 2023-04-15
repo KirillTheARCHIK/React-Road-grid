@@ -1,7 +1,10 @@
 import { CELL_SIZE, CHUNK_SIZE, CHUNK_SIZE_IN_PX } from "const";
 import React from "react";
+import { useContext } from "react";
+import { ToolContext } from "./MapFrame";
 
-const Chunk = ({info}) => {
+const Chunk = ({ info }) => {
+  const { toolContext, setSelectedTool } = useContext(ToolContext);
 
   return (
     <div
@@ -10,7 +13,21 @@ const Chunk = ({info}) => {
         width: CHUNK_SIZE_IN_PX,
         height: CHUNK_SIZE_IN_PX,
         outline: "red solid 1px",
-        fontSize: '40px',
+        fontSize: "40px",
+      }}
+      onClick={(e) => {
+        var rect = e.target.getBoundingClientRect();
+        var xPx = e.clientX - rect.left; //x position within the element.
+        var yPx = e.clientY - rect.top; //y position within the element.
+        var x = Math.floor(xPx / CELL_SIZE);
+        var y = Math.floor(yPx / CELL_SIZE);
+        // console.log({ x: x, y: y });
+
+        console.log(toolContext.selectedTool);
+        toolContext.selectedTool?.onClick({
+          clickIndex: toolContext.selectedTool?.currentClickIndex,
+          cellCoords: { x, y },
+        });
       }}
     >
       {info.coords}
