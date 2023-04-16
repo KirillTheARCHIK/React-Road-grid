@@ -1,11 +1,10 @@
-import { ToolContext } from "map/MapFrame";
 import React, { useState, useEffect, useContext } from "react";
+import { ToolContext } from "../MapFrame";
 import { ToolButton } from "./ToolButton";
 
 const ToolPanel = () => {
   const {toolContext, setSelectedTool} = useContext(ToolContext);
 
-  console.log(toolContext);
 
   return toolContext.tools ? (
     <div

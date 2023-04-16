@@ -1,8 +1,8 @@
 import React, { useState, useEffect, createContext } from "react";
 import Map from "./Map";
-import { CHUNK_SIZE_IN_PX } from "const";
+import { CHUNK_SIZE_IN_PX } from "../const";
 import ToolPanel from "./tools/ToolPanel";
-import { TOOLS } from "tools";
+import { TOOLS } from "../tools";
 
 export const ViewChunksCoordsContext = createContext({
   leftXChunkIndex: 0,

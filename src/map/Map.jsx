@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Chunk from "./Chunk";
-import { CHUNK_SIZE_IN_PX, debounce } from "const";
+import { CHUNK_SIZE_IN_PX, debounce } from "../const";
 import { FrameSizeContext, ViewChunksCoordsContext } from "./MapFrame";
 
 const Map = ({ chunks = [[]] }) => {

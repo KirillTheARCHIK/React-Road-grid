@@ -1,10 +1,11 @@
-import { CELL_SIZE, CHUNK_SIZE, CHUNK_SIZE_IN_PX } from "const";
+import { CELL_SIZE, CHUNK_SIZE, CHUNK_SIZE_IN_PX } from "../const";
 import React from "react";
 import { useContext } from "react";
 import { ToolContext } from "./MapFrame";
 
 const Chunk = ({ info }) => {
-  const { toolContext, setSelectedTool, incrementClickIndex } = useContext(ToolContext);
+  const { toolContext, setSelectedTool, incrementClickIndex } =
+    useContext(ToolContext);
 
   return (
     <div
@@ -25,16 +26,17 @@ const Chunk = ({ info }) => {
 
         console.log(toolContext.selectedTool);
         toolContext.selectedTool?.onClick({
-          clickIndex: toolContext.selectedTool?.currentClickIndex+1,
+          clickIndex: toolContext.selectedTool?.currentClickIndex + 1,
           cellCoords: { x, y },
         });
         incrementClickIndex(toolContext.selectedTool);
-        
       }}
       onContextMenu={(e) => {
-        e.preventDefault();
-        setSelectedTool(null);
-        console.log({ toolContext });
+        if (toolContext.selectedTool?.currentClickIndex >= -1) {
+          e.preventDefault();
+          setSelectedTool(null);
+          console.log({ toolContext });
+        }
       }}
     >
       {info.coords}
