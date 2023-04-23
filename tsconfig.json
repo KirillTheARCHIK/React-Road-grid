@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5", // Укажите целевую версию ECMAScript
+    "target": "es6", // Укажите целевую версию ECMAScript
 
     "lib": ["dom", "dom.iterable", "esnext"], // Список файлов библиотеки для включения в компиляцию
 
@@ -42,7 +42,7 @@
   },
 
   "include": [
-    "src/**/*" // *** Файлы TypeScript должны ввести проверку ***
+    "src" // *** Файлы TypeScript должны ввести проверку ***
   ],
 
   "exclude": ["node_modules", "build"] //  *** Файлы, которые не нужно вводить, проверять ***

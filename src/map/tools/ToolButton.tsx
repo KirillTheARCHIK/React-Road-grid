@@ -26,9 +26,7 @@ export const ToolButton = (props: {
         props.setSelectedTool(props.toolInfo);
       }}
     >
-      {props.toolInfo.name == TOOLS.road.name ? (
-        <AddRoadOutlined style={iconStyle} />
-      ) : null}
+      {props.toolInfo.getIcon(iconStyle) ?? null}
       <p>{props.toolInfo.label}</p>
       {
         <hr

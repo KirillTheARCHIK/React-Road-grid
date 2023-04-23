@@ -2,8 +2,14 @@ import { CELL_SIZE, CHUNK_SIZE, CHUNK_SIZE_IN_PX } from "../const";
 import React from "react";
 import { useContext } from "react";
 import { ToolContext } from "./MapFrame";
+import { ChunkPoint } from "../coords";
 
-const Chunk = ({ info }) => {
+export interface ChunkInfo {
+  coords: ChunkPoint,
+  coordsStr: string,
+}
+
+export const Chunk = (props: { info: ChunkInfo }) => {
   const { toolContext, setSelectedTool, incrementClickIndex } =
     useContext(ToolContext);
 
@@ -17,7 +23,7 @@ const Chunk = ({ info }) => {
         fontSize: "40px",
       }}
       onClick={(e) => {
-        var rect = e.target.getBoundingClientRect();
+        var rect = e.currentTarget.getBoundingClientRect();
         var xPx = e.clientX - rect.left; //x position within the element.
         var yPx = e.clientY - rect.top; //y position within the element.
         var x = Math.floor(xPx / CELL_SIZE);
@@ -39,9 +45,7 @@ const Chunk = ({ info }) => {
         }
       }}
     >
-      {info.coords}
+      {props.info.coords.toString()}
     </div>
   );
 };
-
-export default Chunk;

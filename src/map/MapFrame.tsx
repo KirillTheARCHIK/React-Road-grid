@@ -2,41 +2,27 @@ import React, { useState, useEffect, createContext } from "react";
 import Map from "./Map";
 import { CHUNK_SIZE_IN_PX } from "../const";
 import ToolPanel from "./tools/ToolPanel";
-import { TOOLS } from "../tools";
+import { TOOLS, Tool } from "../tools";
+import { IViewChunksCoordsContext, ViewChunksCoordsContext } from "../context/ViewChunksCoordsContext";
+import { FrameSizeContext, IFrameSizeContext } from "../context/FrameSizeContext";
+import { IToolContext, ToolContext } from "../context/ToolContext";
 
-export const ViewChunksCoordsContext = createContext({
-  leftXChunkIndex: 0,
-  rightXChunkIndex: 0,
-  bottonYChunkIndex: 0,
-  topYChunkIndex: 0,
-});
-export const FrameSizeContext = createContext({
-  x: 0,
-  y: 0,
-});
-export const ToolContext = createContext(null);
 
 export const MapFrame = () => {
-  const [viewChunksCoords, setViewChunksCoords] = useState({});
-  const [frameSize, setFrameSize] = useState({
-    x: 0,
-    y: 0,
-  });
-  const [chunks, setChunks] = useState({});
+  const [viewChunksCoords, setViewChunksCoords] = useState(({} as IViewChunksCoordsContext).viewChunksCoords);
+  const [frameSize, setFrameSize] = useState(({} as IFrameSizeContext).frameSize);
+  const [chunks, setChunks] = useState({} as any);
   const [viewChunks, setViewChunks] = useState([[]]);
-  const [toolContext, setToolContext] = useState({
-    selectedTool: null,
-    tools: TOOLS,
-  });
+  const [toolContext, setToolContext] = useState(({} as IToolContext).toolContext);
 
-  function setSelectedTool(selectedTool) {
+  function setSelectedTool(selectedTool: Tool) {
     setToolContext({
       ...toolContext,
       selectedTool,
     });
   }
 
-  function incrementClickIndex(selectedTool) {
+  function incrementClickIndex(selectedTool: Tool) {
     if (selectedTool) {
       setSelectedTool({
         ...selectedTool,
@@ -61,9 +47,11 @@ export const MapFrame = () => {
       ) {
         if (newChunks[`${chunkX};${chunkY}`] == undefined) {
           newChunks[`${chunkX};${chunkY}`] = {
-            x: chunkX,
-            y: chunkY,
-            coords: `${chunkX};${chunkY}`,
+            coords: {
+              x: chunkX,
+              y: chunkY,
+            },
+            coordsStr: `${chunkX};${chunkY}`,
           };
         }
         newViewChunks[viewChunksCoords.topYChunkIndex - chunkY].push(
