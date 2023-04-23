@@ -1,12 +1,14 @@
 import { CELL_SIZE, CHUNK_SIZE, CHUNK_SIZE_IN_PX } from "../const";
 import React from "react";
 import { useContext } from "react";
-import { ToolContext } from "./MapFrame";
 import { ChunkPoint } from "../coords";
+import { ToolContext } from "../context/ToolContext";
+import { Building } from "../buildings";
 
 export interface ChunkInfo {
-  coords: ChunkPoint,
-  coordsStr: string,
+  coords: ChunkPoint;
+  coordsStr: string;
+  buildings: Array<Building>;
 }
 
 export const Chunk = (props: { info: ChunkInfo }) => {
@@ -31,21 +33,23 @@ export const Chunk = (props: { info: ChunkInfo }) => {
         // console.log({ x: x, y: y });
 
         console.log(toolContext.selectedTool);
-        toolContext.selectedTool?.onClick({
-          clickIndex: toolContext.selectedTool?.currentClickIndex + 1,
-          cellCoords: { x, y },
-        });
-        incrementClickIndex(toolContext.selectedTool);
+        toolContext.selectedTool?.onClick(
+          toolContext.selectedTool?.currentClickIndex + 1,
+          { chunkCoords: props.info.coords, localCoords: { x, y } }
+        );
+        if(toolContext.selectedTool){
+          incrementClickIndex!(toolContext.selectedTool);
+        }
       }}
       onContextMenu={(e) => {
-        if (toolContext.selectedTool?.currentClickIndex >= -1) {
+        if (toolContext.selectedTool && toolContext.selectedTool?.currentClickIndex >= -1) {
           e.preventDefault();
-          setSelectedTool(null);
+          setSelectedTool!(undefined);
           console.log({ toolContext });
         }
       }}
     >
-      {props.info.coords.toString()}
+      {`${props.info.coords.x};${props.info.coords.y}`}
     </div>
   );
 };

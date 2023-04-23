@@ -3,17 +3,20 @@ import Map from "./Map";
 import { CHUNK_SIZE_IN_PX } from "../const";
 import ToolPanel from "./tools/ToolPanel";
 import { TOOLS, Tool } from "../tools";
-import { IViewChunksCoordsContext, ViewChunksCoordsContext } from "../context/ViewChunksCoordsContext";
+import { IViewChunksCoordsContext, IViewChunksCoordsContextDefaultValues, ViewChunksCoordsContext } from "../context/ViewChunksCoordsContext";
 import { FrameSizeContext, IFrameSizeContext } from "../context/FrameSizeContext";
-import { IToolContext, ToolContext } from "../context/ToolContext";
+import { IToolContext, IToolContextDefaultValues, ToolContext } from "../context/ToolContext";
+import { ChunkInfo } from "./Chunk";
 
 
 export const MapFrame = () => {
-  const [viewChunksCoords, setViewChunksCoords] = useState(({} as IViewChunksCoordsContext).viewChunksCoords);
-  const [frameSize, setFrameSize] = useState(({} as IFrameSizeContext).frameSize);
-  const [chunks, setChunks] = useState({} as any);
-  const [viewChunks, setViewChunks] = useState([[]]);
-  const [toolContext, setToolContext] = useState(({} as IToolContext).toolContext);
+  const [viewChunksCoords, setViewChunksCoords] = useState(IViewChunksCoordsContextDefaultValues.viewChunksCoords);
+  const [frameSize, setFrameSize] = useState({x: 0, y: 0} );
+  const [chunks, setChunks] = useState({} as {
+    [key: string]: ChunkInfo;
+  });
+  const [viewChunks, setViewChunks] = useState([[]] as Array<Array<ChunkInfo>>);
+  const [toolContext, setToolContext] = useState(IToolContextDefaultValues.toolContext);
 
   function setSelectedTool(selectedTool: Tool) {
     setToolContext({
@@ -33,7 +36,7 @@ export const MapFrame = () => {
 
   useEffect(() => {
     let newChunks = chunks;
-    let newViewChunks = [];
+    let newViewChunks: typeof viewChunks = [];
     for (
       let chunkY = viewChunksCoords.topYChunkIndex;
       chunkY >= viewChunksCoords.bottonYChunkIndex;
@@ -52,6 +55,7 @@ export const MapFrame = () => {
               y: chunkY,
             },
             coordsStr: `${chunkX};${chunkY}`,
+            buildings: [],
           };
         }
         newViewChunks[viewChunksCoords.topYChunkIndex - chunkY].push(
@@ -69,6 +73,8 @@ export const MapFrame = () => {
       y: window.innerHeight,
     });
   }, []);
+
+  
 
   return (
     <ViewChunksCoordsContext.Provider

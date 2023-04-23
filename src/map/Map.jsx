@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {Chunk} from "./Chunk";
 import { CHUNK_SIZE_IN_PX, debounce } from "../const";
-import { FrameSizeContext, ViewChunksCoordsContext } from "./MapFrame";
+import { ViewChunksCoordsContext } from "../context/ViewChunksCoordsContext";
+import { FrameSizeContext } from "../context/FrameSizeContext";
 
-const Map = ({ chunks = [[]] }) => {
+const Map = ({ chunks }) => {
   const [currentCoords, setCurrentCoords] = useState({ x: -683, y: 610 });
   const { frameSize, setFrameSize } = useContext(FrameSizeContext);
   const [isDragging, setIsDragging] = useState(false);

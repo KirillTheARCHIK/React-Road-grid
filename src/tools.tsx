@@ -40,10 +40,14 @@ export abstract class BuildTool extends Tool {
     name: string,
     label: string,
     currentClickIndex: number,
-    onClick: (clickIndex: number, cellCoords: GlobalPoint) => void,
+    onClick: (clickIndex: number, cellCoords: GlobalPoint) => void = (clickIndex: number, cellCoords: GlobalPoint) =>{
+      
+    },
     getIcon: (iconStyle: { fontSize: number; color: string }) => ReactElement,
 
-    public onHover: (clickIndex: number, cellCoords: GlobalPoint) => void,
+    public onHover: (clickIndex: number, cellCoords: GlobalPoint) => void = (clickIndex: number, cellCoords: GlobalPoint) => {
+      
+    },
     public building: Building
   ) {
     super(name, label, currentClickIndex, onClick, getIcon);
@@ -58,11 +62,11 @@ export class BuildRoadNodeTool extends BuildTool {
       building.name,
       building.label,
       -1,
-      (clickIndex: number, cellCoords: GlobalPoint) => {},
+      undefined,
       (iconStyle) => {
         return <Traffic style={iconStyle} />;
       },
-      (clickIndex: number, cellCoords: GlobalPoint) => {},
+      undefined,
       building
     );
   }

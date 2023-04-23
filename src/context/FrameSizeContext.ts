@@ -6,4 +6,4 @@ export interface IFrameSizeContext{
   setFrameSize?: React.Dispatch<any>,
 }
 
-export const FrameSizeContext = createContext({} as IFrameSizeContext);
+export const FrameSizeContext = createContext<IFrameSizeContext>({} as IFrameSizeContext);
