@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { ChunkPoint } from "../coords";
 import { ToolContext } from "../context/ToolContext";
 import { Building } from "../buildings";
+import { BuildTool } from "../tools";
+import { ChunksContext } from "../context/ChunksContext";
 
 export interface ChunkInfo {
   coords: ChunkPoint;
@@ -14,6 +16,7 @@ export interface ChunkInfo {
 export const Chunk = (props: { info: ChunkInfo }) => {
   const { toolContext, setSelectedTool, incrementClickIndex } =
     useContext(ToolContext);
+  const {chunks, setChunks} = useContext(ChunksContext);
 
   return (
     <div
@@ -32,17 +35,28 @@ export const Chunk = (props: { info: ChunkInfo }) => {
         var y = Math.floor(yPx / CELL_SIZE);
         // console.log({ x: x, y: y });
 
-        console.log(toolContext.selectedTool);
-        toolContext.selectedTool?.onClick(
-          toolContext.selectedTool?.currentClickIndex + 1,
-          { chunkCoords: props.info.coords, localCoords: { x, y } }
-        );
-        if(toolContext.selectedTool){
+        if (toolContext.selectedTool instanceof BuildTool) {
+          (toolContext.selectedTool as BuildTool)?.onClick(
+            toolContext.selectedTool?.currentClickIndex + 1,
+            { chunkCoords: props.info.coords, localCoords: { x, y } },
+            chunks,
+            setChunks,
+          );
+        } else {
+          toolContext.selectedTool?.onClick(
+            toolContext.selectedTool?.currentClickIndex + 1,
+            { chunkCoords: props.info.coords, localCoords: { x, y } }
+          );
+        }
+        if (toolContext.selectedTool) {
           incrementClickIndex!(toolContext.selectedTool);
         }
       }}
       onContextMenu={(e) => {
-        if (toolContext.selectedTool && toolContext.selectedTool?.currentClickIndex >= -1) {
+        if (
+          toolContext.selectedTool &&
+          toolContext.selectedTool?.currentClickIndex >= -1
+        ) {
           e.preventDefault();
           setSelectedTool!(undefined);
           console.log({ toolContext });

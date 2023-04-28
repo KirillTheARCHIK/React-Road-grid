@@ -3,20 +3,37 @@ import Map from "./Map";
 import { CHUNK_SIZE_IN_PX } from "../const";
 import ToolPanel from "./tools/ToolPanel";
 import { TOOLS, Tool } from "../tools";
-import { IViewChunksCoordsContext, IViewChunksCoordsContextDefaultValues, ViewChunksCoordsContext } from "../context/ViewChunksCoordsContext";
-import { FrameSizeContext, IFrameSizeContext } from "../context/FrameSizeContext";
-import { IToolContext, IToolContextDefaultValues, ToolContext } from "../context/ToolContext";
+import {
+  IViewChunksCoordsContext,
+  IViewChunksCoordsContextDefaultValues,
+  ViewChunksCoordsContext,
+} from "../context/ViewChunksCoordsContext";
+import {
+  FrameSizeContext,
+  IFrameSizeContext,
+} from "../context/FrameSizeContext";
+import {
+  IToolContext,
+  IToolContextDefaultValues,
+  ToolContext,
+} from "../context/ToolContext";
 import { ChunkInfo } from "./Chunk";
-
+import { ChunksContext } from "../context/ChunksContext";
 
 export const MapFrame = () => {
-  const [viewChunksCoords, setViewChunksCoords] = useState(IViewChunksCoordsContextDefaultValues.viewChunksCoords);
-  const [frameSize, setFrameSize] = useState({x: 0, y: 0} );
-  const [chunks, setChunks] = useState({} as {
-    [key: string]: ChunkInfo;
-  });
+  const [viewChunksCoords, setViewChunksCoords] = useState(
+    IViewChunksCoordsContextDefaultValues.viewChunksCoords
+  );
+  const [frameSize, setFrameSize] = useState({ x: 0, y: 0 });
+  const [chunks, setChunks] = useState(
+    {} as {
+      [key: string]: ChunkInfo;
+    }
+  );
   const [viewChunks, setViewChunks] = useState([[]] as Array<Array<ChunkInfo>>);
-  const [toolContext, setToolContext] = useState(IToolContextDefaultValues.toolContext);
+  const [toolContext, setToolContext] = useState(
+    IToolContextDefaultValues.toolContext
+  );
 
   function setSelectedTool(selectedTool: Tool) {
     setToolContext({
@@ -65,7 +82,7 @@ export const MapFrame = () => {
     }
     setChunks(newChunks);
     setViewChunks(newViewChunks);
-  }, [viewChunksCoords, frameSize]);
+  }, [viewChunksCoords, frameSize, chunks]);
 
   useEffect(() => {
     setFrameSize({
@@ -73,8 +90,6 @@ export const MapFrame = () => {
       y: window.innerHeight,
     });
   }, []);
-
-  
 
   return (
     <ViewChunksCoordsContext.Provider
@@ -97,24 +112,26 @@ export const MapFrame = () => {
             incrementClickIndex,
           }}
         >
-          <div
-            style={{
-              width: frameSize.x,
-              height: frameSize.y,
-              overflow: "hidden",
-            }}
-          >
-            <Map chunks={viewChunks} />
+          <ChunksContext.Provider value={{ chunks, setChunks }}>
             <div
               style={{
-                position: "absolute",
-                left: "50px",
-                bottom: "50px",
+                width: frameSize.x,
+                height: frameSize.y,
+                overflow: "hidden",
               }}
             >
-              <ToolPanel />
+              <Map chunks={viewChunks} />
+              <div
+                style={{
+                  position: "absolute",
+                  left: "50px",
+                  bottom: "50px",
+                }}
+              >
+                <ToolPanel />
+              </div>
             </div>
-          </div>
+          </ChunksContext.Provider>
         </ToolContext.Provider>
       </FrameSizeContext.Provider>
     </ViewChunksCoordsContext.Provider>

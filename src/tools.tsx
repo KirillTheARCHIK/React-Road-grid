@@ -3,6 +3,7 @@ import { GlobalPoint } from "./coords";
 import { ReactElement } from "react";
 import React from "react";
 import { Building, RoadNodeBuilding } from "./buildings";
+import { ChunkInfo } from "./map/Chunk";
 
 export abstract class Tool {
   constructor(
@@ -23,7 +24,7 @@ export class RoadTool extends Tool {
       "road",
       "Дорога",
       -1,
-      (clickIndex: number, cellCoords: GlobalPoint) => {
+      (clickIndex: number, cellCoords: GlobalPoint, ...args) => {
         console.log({ clickIndex, cellCoords });
         if (clickIndex == 0) {
         }
@@ -40,15 +41,40 @@ export abstract class BuildTool extends Tool {
     name: string,
     label: string,
     currentClickIndex: number,
-    onClick: (clickIndex: number, cellCoords: GlobalPoint) => void = (clickIndex: number, cellCoords: GlobalPoint) =>{
-      
+    onClick: (
+      clickIndex: number,
+      cellCoords: GlobalPoint,
+      chunks?: {
+        [key: string]: ChunkInfo;
+      },
+      setChunks?: React.Dispatch<
+        React.SetStateAction<{
+          [key: string]: ChunkInfo;
+        }>
+      >
+    ) => void = (
+      clickIndex: number,
+      cellCoords: GlobalPoint,
+      chunks?: {
+        [key: string]: ChunkInfo;
+      },
+      setChunks?: React.Dispatch<
+        React.SetStateAction<{
+          [key: string]: ChunkInfo;
+        }>
+      >
+    ) => {
+      if (clickIndex==0) {
+        
+      }
     },
     getIcon: (iconStyle: { fontSize: number; color: string }) => ReactElement,
 
-    public onHover: (clickIndex: number, cellCoords: GlobalPoint) => void = (clickIndex: number, cellCoords: GlobalPoint) => {
-      
-    },
-    public building: Building
+    public onHover: (clickIndex: number, cellCoords: GlobalPoint) => void = (
+      clickIndex: number,
+      cellCoords: GlobalPoint
+    ) => {},
+    public building: typeof Building
   ) {
     super(name, label, currentClickIndex, onClick, getIcon);
   }
@@ -56,10 +82,10 @@ export abstract class BuildTool extends Tool {
 
 export class BuildRoadNodeTool extends BuildTool {
   constructor() {
-    const building = new RoadNodeBuilding();
+    const building = RoadNodeBuilding;
 
     super(
-      building.name,
+      building.Name,
       building.label,
       -1,
       undefined,
