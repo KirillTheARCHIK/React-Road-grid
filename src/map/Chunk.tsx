@@ -36,7 +36,7 @@ export const Chunk = (props: { info: ChunkInfo }) => {
         // console.log({ x: x, y: y });
 
         if (toolContext.selectedTool instanceof BuildTool) {
-          (toolContext.selectedTool as BuildTool)?.onClick(
+          toolContext.selectedTool?.onClick(
             toolContext.selectedTool?.currentClickIndex + 1,
             { chunkCoords: props.info.coords, localCoords: { x, y } },
             chunks,

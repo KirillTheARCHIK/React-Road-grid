@@ -1,5 +1,5 @@
 import { AddRoadOutlined, Traffic } from "@mui/icons-material";
-import { GlobalPoint } from "./coords";
+import { GlobalPoint, chunkPointToString } from "./coords";
 import { ReactElement } from "react";
 import React from "react";
 import { Building, RoadNodeBuilding } from "./buildings";
@@ -24,7 +24,7 @@ export class RoadTool extends Tool {
       "road",
       "Дорога",
       -1,
-      (clickIndex: number, cellCoords: GlobalPoint, ...args) => {
+      (clickIndex: number, cellCoords: GlobalPoint) => {
         console.log({ clickIndex, cellCoords });
         if (clickIndex == 0) {
         }
@@ -37,22 +37,24 @@ export class RoadTool extends Tool {
 }
 
 export abstract class BuildTool extends Tool {
+  public onClick: (
+    clickIndex: number,
+    cellCoords: GlobalPoint,
+    chunks?: {
+      [key: string]: ChunkInfo;
+    },
+    setChunks?: React.Dispatch<
+      React.SetStateAction<{
+        [key: string]: ChunkInfo;
+      }>
+    >
+  ) => void;
+
   constructor(
     name: string,
     label: string,
     currentClickIndex: number,
-    onClick: (
-      clickIndex: number,
-      cellCoords: GlobalPoint,
-      chunks?: {
-        [key: string]: ChunkInfo;
-      },
-      setChunks?: React.Dispatch<
-        React.SetStateAction<{
-          [key: string]: ChunkInfo;
-        }>
-      >
-    ) => void = (
+    onClick = (
       clickIndex: number,
       cellCoords: GlobalPoint,
       chunks?: {
@@ -64,8 +66,8 @@ export abstract class BuildTool extends Tool {
         }>
       >
     ) => {
-      if (clickIndex==0) {
-        
+      if (clickIndex == 0) {
+        buildOnChunk(new building(undefined, cellCoords), cellCoords, chunks!, setChunks!);
       }
     },
     getIcon: (iconStyle: { fontSize: number; color: string }) => ReactElement,
@@ -77,7 +79,25 @@ export abstract class BuildTool extends Tool {
     public building: typeof Building
   ) {
     super(name, label, currentClickIndex, onClick, getIcon);
+    this.onClick = onClick;
   }
+}
+
+export function buildOnChunk(
+  building: Building,
+  cellCoords: GlobalPoint,
+  chunks: {
+    [key: string]: ChunkInfo;
+  },
+  setChunks: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: ChunkInfo;
+    }>
+  >
+) {
+  const chunk = chunks[chunkPointToString(cellCoords.chunkCoords)];
+  console.log(chunk);
+  
 }
 
 export class BuildRoadNodeTool extends BuildTool {

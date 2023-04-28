@@ -3,7 +3,7 @@ import { GlobalPoint } from "./coords";
 import { RoadNode } from "./map/buildings/RoadNode";
 import React from "react";
 
-export abstract class Building {
+export class Building {
   public static Name: string;
   public static label: string;
   public getIcon: () => ReactElement = () => <></>;

@@ -3,6 +3,10 @@ export interface ChunkPoint {
   y: number;
 }
 
+export function chunkPointToString(point: ChunkPoint) {
+  return `${point.x};${point.y}`;
+}
+
 export interface Point {
   x: number;
   y: number;
