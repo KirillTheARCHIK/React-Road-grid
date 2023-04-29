@@ -1,5 +1,5 @@
 import { AddRoadOutlined, Traffic } from "@mui/icons-material";
-import { GlobalPoint, chunkPointToString } from "./coords";
+import { GlobalPoint, chunkPointToString, chunkPointIsEqual } from "./coords";
 import { ReactElement } from "react";
 import React from "react";
 import { Building, RoadNodeBuilding } from "./buildings";
@@ -19,22 +19,83 @@ export abstract class Tool {
   ) {}
 }
 
+var roadToolCache = {} as {
+  from?: GlobalPoint;
+  to?: GlobalPoint;
+};
 export class RoadTool extends Tool {
-  constructor() {
-    super(
-      "road",
-      "Дорога",
-      2,
-      -1,
-      (clickIndex: number, cellCoords: GlobalPoint) => {
-        console.log({ clickIndex, cellCoords });
-        if (clickIndex == 0) {
-        }
+  public onClick: (
+    clickIndex: number,
+    cellCoords: GlobalPoint,
+    chunks?: {
+      [key: string]: ChunkInfo;
+    },
+    setChunks?: React.Dispatch<
+      React.SetStateAction<{
+        [key: string]: ChunkInfo;
+      }>
+    >
+  ) => void;
+
+  constructor(
+    onClick = (
+      clickIndex: number,
+      cellCoords: GlobalPoint,
+      chunks?: {
+        [key: string]: ChunkInfo;
       },
-      (iconStyle) => {
-        return <AddRoadOutlined style={iconStyle} />;
+      setChunks?: React.Dispatch<
+        React.SetStateAction<{
+          [key: string]: ChunkInfo;
+        }>
+      >
+    ) => {
+      const newChunks = chunks!;
+      // console.log(newChunks);
+      
+      const chunkTo = newChunks[chunkPointToString(cellCoords.chunkCoords)];
+      // console.log(chunkTo);
+      const building = chunkTo.buildings.find(
+        (value) =>
+          value instanceof RoadNodeBuilding &&
+          chunkPointIsEqual(
+            value.globalPoint.localCoords,
+            cellCoords.localCoords
+          )
+      );
+      if (building && building instanceof RoadNodeBuilding) {
+        if (clickIndex == 0) {
+          roadToolCache.from = cellCoords;
+          // console.log(roadToolCache);
+          
+        } else if (clickIndex == 1 && roadToolCache.from) {
+          // console.log(roadToolCache);
+          const chunkFrom =
+            newChunks[chunkPointToString(roadToolCache.from.chunkCoords)];
+          const buildingFrom = chunkFrom.buildings.find(
+            (value) =>
+              value instanceof RoadNodeBuilding &&
+              chunkPointIsEqual(
+                value.globalPoint.localCoords,
+                roadToolCache.from!.localCoords
+              )
+          );
+          if (buildingFrom && buildingFrom instanceof RoadNodeBuilding) {
+            buildingFrom.connects.push(building);
+            // console.log(buildingFrom.connects);
+            
+            setChunks!(newChunks);
+          }
+        }
+      } else {
+        roadToolCache.from = undefined;
       }
-    );
+    }
+  ) {
+    super("road", "Дорога", 2, -1, onClick, (iconStyle) => {
+      return <AddRoadOutlined style={iconStyle} />;
+    });
+    this.onClick = onClick;
   }
 }
 
@@ -103,7 +164,7 @@ export function buildOnChunk(
 ) {
   const newChunks = chunks;
   const chunk = newChunks[chunkPointToString(cellCoords.chunkCoords)];
-  console.log(chunk);
+  // console.log(chunk);
   if (
     chunk.buildings.every(
       (value) =>

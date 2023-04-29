@@ -4,15 +4,14 @@ import { RoadTool, Tool, TOOLS } from "../../tools";
 
 export const ToolButton = (props: {
   toolInfo: Tool;
-  isSelected: false;
-  setSelectedTool: any;
+  isSelected: Boolean;
+  setSelectedTool?: React.Dispatch<any>;
 }) => {
   const iconStyle = {
     fontSize: 70,
     color: "black",
     // backgroundColor: isSelected ? '#00000020' : null,
   };
-
   return (
     <div
       className="tool-button f-c"
@@ -23,7 +22,8 @@ export const ToolButton = (props: {
         padding: "0 0 5px 0",
       }}
       onClick={() => {
-        props.setSelectedTool(props.toolInfo);
+        props.toolInfo.currentClickIndex = -1;
+        props.setSelectedTool!(props.toolInfo);
       }}
     >
       {props.toolInfo.getIcon(iconStyle) ?? null}

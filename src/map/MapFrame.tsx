@@ -42,15 +42,6 @@ export const MapFrame = () => {
     });
   }
 
-  function incrementClickIndex(selectedTool: Tool) {
-    if (selectedTool) {
-      setSelectedTool({
-        ...selectedTool,
-        currentClickIndex: selectedTool.currentClickIndex + 1,
-      });
-    }
-  }
-
   useEffect(() => {
     let newChunks = chunks;
     let newViewChunks: typeof viewChunks = [];
@@ -82,7 +73,7 @@ export const MapFrame = () => {
     }
     setChunks(newChunks);
     setViewChunks(newViewChunks);
-  }, [viewChunksCoords, frameSize, chunks]);
+  }, [viewChunksCoords, frameSize]);
 
   useEffect(() => {
     setFrameSize({
@@ -109,7 +100,6 @@ export const MapFrame = () => {
             toolContext,
             setToolContext,
             setSelectedTool,
-            incrementClickIndex,
           }}
         >
           <ChunksContext.Provider value={{ chunks, setChunks }}>

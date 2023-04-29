@@ -46,6 +46,7 @@ const Map = ({ chunks }) => {
       id="map"
       style={{
         position: "relative",
+        overflow: 'hidden',
         cursor: isDragging ? "grabbing" : "grab",
         width: chunks[0]?.length * CHUNK_SIZE_IN_PX,
         height: chunks.length * CHUNK_SIZE_IN_PX,

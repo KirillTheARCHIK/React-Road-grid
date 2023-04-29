@@ -21,7 +21,7 @@ export interface IToolContext {
   };
   setToolContext?: React.Dispatch<any>;
   setSelectedTool?: React.Dispatch<any>;
-  incrementClickIndex?: (selectedTool: Tool) => void;
+  incrementClickIndex?: () => void;
 }
 
 export const IToolContextDefaultValues = {
