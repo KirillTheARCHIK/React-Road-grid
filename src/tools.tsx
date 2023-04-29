@@ -9,6 +9,7 @@ export abstract class Tool {
   constructor(
     public name: string,
     public label: string,
+    public maxClicks: number,
     public currentClickIndex: number,
     public onClick: (clickIndex: number, cellCoords: GlobalPoint) => void,
     public getIcon: (iconStyle: {
@@ -23,6 +24,7 @@ export class RoadTool extends Tool {
     super(
       "road",
       "Дорога",
+      2,
       -1,
       (clickIndex: number, cellCoords: GlobalPoint) => {
         console.log({ clickIndex, cellCoords });
@@ -53,6 +55,7 @@ export abstract class BuildTool extends Tool {
   constructor(
     name: string,
     label: string,
+    maxClicks: number,
     currentClickIndex: number,
     onClick = (
       clickIndex: number,
@@ -66,9 +69,12 @@ export abstract class BuildTool extends Tool {
         }>
       >
     ) => {
-      if (clickIndex == 0) {
-        buildOnChunk(new building(undefined, cellCoords), cellCoords, chunks!, setChunks!);
-      }
+      buildOnChunk(
+        new building(undefined, cellCoords),
+        cellCoords,
+        chunks!,
+        setChunks!
+      );
     },
     getIcon: (iconStyle: { fontSize: number; color: string }) => ReactElement,
 
@@ -78,7 +84,7 @@ export abstract class BuildTool extends Tool {
     ) => {},
     public building: typeof Building
   ) {
-    super(name, label, currentClickIndex, onClick, getIcon);
+    super(name, label, maxClicks, currentClickIndex, onClick, getIcon);
     this.onClick = onClick;
   }
 }
@@ -95,9 +101,19 @@ export function buildOnChunk(
     }>
   >
 ) {
-  const chunk = chunks[chunkPointToString(cellCoords.chunkCoords)];
+  const newChunks = chunks;
+  const chunk = newChunks[chunkPointToString(cellCoords.chunkCoords)];
   console.log(chunk);
-  
+  if (
+    chunk.buildings.every(
+      (value) =>
+        value.globalPoint.localCoords.x != cellCoords.localCoords.x &&
+        value.globalPoint.localCoords.y != cellCoords.localCoords.y
+    )
+  ) {
+    chunk.buildings.push(building);
+    setChunks(newChunks);
+  }
 }
 
 export class BuildRoadNodeTool extends BuildTool {
@@ -107,6 +123,7 @@ export class BuildRoadNodeTool extends BuildTool {
     super(
       building.Name,
       building.label,
+      1,
       -1,
       undefined,
       (iconStyle) => {

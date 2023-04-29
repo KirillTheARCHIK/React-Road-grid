@@ -6,7 +6,7 @@ import React from "react";
 export class Building {
   public static Name: string;
   public static label: string;
-  public getIcon: () => ReactElement = () => <></>;
+  public getIcon: (props: (React.InputHTMLAttributes<HTMLInputElement> & React.ClassAttributes<HTMLInputElement>)) => ReactElement = () => <></>;
   public onClick: (clickIndex: number, cellCoords: GlobalPoint) => void = (
     a,
     b
@@ -21,8 +21,8 @@ export class Building {
 export class RoadNodeBuilding extends Building {
   public static Name = "road_node";
   public static label = "Узел дороги";
-  public getIcon: () => ReactElement = () => {
-    return <RoadNode />;
+  public getIcon: (props: (React.InputHTMLAttributes<HTMLInputElement> & React.ClassAttributes<HTMLInputElement>)) => ReactElement = (props) => {
+    return <RoadNode {...props} />;
   };
   public onClick: (clickIndex: number, cellCoords: GlobalPoint) => void = (
     clickIndex: number,

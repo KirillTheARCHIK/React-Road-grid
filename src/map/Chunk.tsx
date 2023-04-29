@@ -16,7 +16,7 @@ export interface ChunkInfo {
 export const Chunk = (props: { info: ChunkInfo }) => {
   const { toolContext, setSelectedTool, incrementClickIndex } =
     useContext(ToolContext);
-  const {chunks, setChunks} = useContext(ChunksContext);
+  const { chunks, setChunks } = useContext(ChunksContext);
 
   return (
     <div
@@ -35,21 +35,32 @@ export const Chunk = (props: { info: ChunkInfo }) => {
         var y = Math.floor(yPx / CELL_SIZE);
         // console.log({ x: x, y: y });
 
-        if (toolContext.selectedTool instanceof BuildTool) {
-          toolContext.selectedTool?.onClick(
-            toolContext.selectedTool?.currentClickIndex + 1,
-            { chunkCoords: props.info.coords, localCoords: { x, y } },
-            chunks,
-            setChunks,
-          );
-        } else {
-          toolContext.selectedTool?.onClick(
-            toolContext.selectedTool?.currentClickIndex + 1,
-            { chunkCoords: props.info.coords, localCoords: { x, y } }
-          );
-        }
         if (toolContext.selectedTool) {
           incrementClickIndex!(toolContext.selectedTool);
+          if (
+            toolContext.selectedTool?.currentClickIndex + 1 <
+            toolContext.selectedTool?.maxClicks
+          ) {
+            if (toolContext.selectedTool instanceof BuildTool) {
+              toolContext.selectedTool?.onClick(
+                toolContext.selectedTool?.currentClickIndex + 1,
+                { chunkCoords: props.info.coords, localCoords: { x, y } },
+                chunks,
+                setChunks
+              );
+            } else {
+              toolContext.selectedTool?.onClick(
+                toolContext.selectedTool?.currentClickIndex,
+                { chunkCoords: props.info.coords, localCoords: { x, y } }
+              );
+            }
+            if (
+              toolContext.selectedTool?.currentClickIndex + 2 ==
+              toolContext.selectedTool?.maxClicks
+            ) {
+              setSelectedTool!(undefined);
+            }
+          }
         }
       }}
       onContextMenu={(e) => {
@@ -63,7 +74,17 @@ export const Chunk = (props: { info: ChunkInfo }) => {
         }
       }}
     >
-      {`${props.info.coords.x};${props.info.coords.y}`}
+      <p
+        style={{ position: "absolute", margin: 0 }}
+      >{`${props.info.coords.x};${props.info.coords.y}`}</p>
+      {props.info.buildings.map((building) =>
+        building.getIcon({
+          style: {
+            left: building.globalPoint.localCoords.x * CELL_SIZE,
+            top: building.globalPoint.localCoords.y * CELL_SIZE,
+          },
+        })
+      )}
     </div>
   );
 };

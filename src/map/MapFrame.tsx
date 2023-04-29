@@ -89,7 +89,7 @@ export const MapFrame = () => {
       x: window.innerWidth,
       y: window.innerHeight,
     });
-  }, []);
+  }, []);  
 
   return (
     <ViewChunksCoordsContext.Provider
