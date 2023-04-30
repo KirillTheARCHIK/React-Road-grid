@@ -4,8 +4,9 @@ import { useContext } from "react";
 import { ChunkPoint } from "../coords";
 import { ToolContext } from "../context/ToolContext";
 import { Building } from "../buildings";
-import { BuildTool, RoadTool } from "../tools";
+import { BuildTool } from "../tools/buildTool";
 import { ChunksContext } from "../context/ChunksContext";
+import { RoadTool } from "../tools/roadTool";
 
 export interface ChunkInfo {
   coords: ChunkPoint;

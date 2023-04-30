@@ -2,9 +2,6 @@ export const CELL_SIZE = 32;
 export const CHUNK_SIZE = 16;
 export const CHUNK_SIZE_IN_PX = CELL_SIZE*CHUNK_SIZE;
 
-export function getStyleCoordsInChunk(){
-    
-}
 
 
 export function debounce(f, ms) {

@@ -23,6 +23,10 @@ export interface GlobalPoint {
   localCoords: ChunkPoint;
 }
 
+export function globalPointIsEqual(p1: GlobalPoint, p2: GlobalPoint) {
+  return chunkPointIsEqual(p1.chunkCoords, p2.chunkCoords) && chunkPointIsEqual(p1.localCoords, p2.localCoords);
+}
+
 export class GlobalPointConnect {
   distancePx: number;
   azimuthDeg: number;
@@ -30,13 +34,13 @@ export class GlobalPointConnect {
   constructor(p1: GlobalPoint, p2: GlobalPoint) {
     const p1Px = {
       x: p1.chunkCoords.x * CHUNK_SIZE_IN_PX + p1.localCoords.x * CELL_SIZE,
-      y: p1.chunkCoords.y * CHUNK_SIZE_IN_PX + p1.localCoords.y * CELL_SIZE,
+      y: p1.chunkCoords.y * CHUNK_SIZE_IN_PX - p1.localCoords.y * CELL_SIZE,
     } as Point;
     const p2Px = {
       x: p2.chunkCoords.x * CHUNK_SIZE_IN_PX + p2.localCoords.x * CELL_SIZE,
-      y: p2.chunkCoords.y * CHUNK_SIZE_IN_PX + p2.localCoords.y * CELL_SIZE,
+      y: p2.chunkCoords.y * CHUNK_SIZE_IN_PX - p2.localCoords.y * CELL_SIZE,
     } as Point;
-    console.log({p1Px, p2Px});
+    // console.log({p1Px, p2Px});
     
 
     this.distancePx = Math.sqrt(

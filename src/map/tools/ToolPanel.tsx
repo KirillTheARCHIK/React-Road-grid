@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ToolButton } from "./ToolButton";
 import { ToolContext } from "../../context/ToolContext";
-import { Tool } from "../../tools";
+import { Tool } from "../../tools/Tool";
 
 const ToolPanel = () => {
   const { toolContext, setSelectedTool } = useContext(ToolContext);

@@ -1,10 +1,12 @@
 import { ReactElement } from "react";
-import { GlobalPoint } from "./coords";
+import { GlobalPoint, GlobalPointConnect } from "./coords";
 import { RoadNode } from "./map/buildings/RoadNode";
 import React from "react";
+import { buildPath } from "./graph";
 
 export type BuildingProps = React.InputHTMLAttributes<HTMLInputElement> & React.ClassAttributes<HTMLInputElement> & {
   info: Building;
+  isSelected?: Boolean;
 };
 export class Building {
   public static Name: string;
@@ -19,6 +21,10 @@ export class Building {
     public currentClickIndex: number = -1,
     public globalPoint: GlobalPoint
   ) {}
+
+  public distanceTo( otherBuilding: Building){
+    return new GlobalPointConnect(this.globalPoint, otherBuilding.globalPoint);
+  }
 }
 
 export class RoadNodeBuilding extends Building {
@@ -36,6 +42,9 @@ export class RoadNodeBuilding extends Building {
     }
   };
   public connects: RoadNodeBuilding[] = [];
+  public buildPathTo(targetNode: RoadNodeBuilding): RoadNodeBuilding[] | undefined{
+    return buildPath(this, targetNode);
+  }
 
   constructor(currentClickIndex: number = -1, globalPoint: GlobalPoint) {
     super(-1, globalPoint);

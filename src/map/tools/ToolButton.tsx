@@ -1,6 +1,6 @@
 import { AddRoadOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
-import { RoadTool, Tool, TOOLS } from "../../tools";
+import {  Tool } from "../../tools/Tool";
 
 export const ToolButton = (props: {
   toolInfo: Tool;

@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { TOOLS, Tool } from "../tools";
+import { Tool } from "../tools/Tool";
+import { TOOLS } from "../tools/tools";
 
 // export class IToolContext {
 //   constructor(
