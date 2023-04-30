@@ -1,7 +1,6 @@
-import {
-  GlobalPoint,
-} from "../coords";
+import { GlobalPoint } from "../coords";
 import { ReactElement } from "react";
+import { ChunkInfo } from "../map/Chunk";
 
 export abstract class Tool {
   constructor(
@@ -9,7 +8,18 @@ export abstract class Tool {
     public label: string,
     public maxClicks: number,
     public currentClickIndex: number,
-    public onClick: (clickIndex: number, cellCoords: GlobalPoint) => void,
+    public onClick: (
+      clickIndex: number,
+      cellCoords: GlobalPoint,
+      chunks?: {
+        [key: string]: ChunkInfo;
+      },
+      setChunks?: React.Dispatch<
+        React.SetStateAction<{
+          [key: string]: ChunkInfo;
+        }>
+      >
+    ) => void,
     public getIcon: (iconStyle: {
       fontSize: number;
       color: string;

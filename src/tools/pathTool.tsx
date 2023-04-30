@@ -1,7 +1,12 @@
 import { Route } from "@mui/icons-material";
 import React from "react";
 import { RoadNodeBuilding } from "../buildings";
-import { chunkPointIsEqual, chunkPointToString, GlobalPoint, globalPointIsEqual } from "../coords";
+import {
+  chunkPointIsEqual,
+  chunkPointToString,
+  GlobalPoint,
+  globalPointIsEqual,
+} from "../coords";
 import { ChunkInfo } from "../map/Chunk";
 import { Tool } from "./Tool";
 
@@ -20,7 +25,9 @@ export class PathTool extends Tool {
       React.SetStateAction<{
         [key: string]: ChunkInfo;
       }>
-    >
+    >,
+    routes?: Array<Array<RoadNodeBuilding>>,
+    setRoutes?: React.Dispatch<any>
   ) => void;
 
   constructor(
@@ -34,7 +41,9 @@ export class PathTool extends Tool {
         React.SetStateAction<{
           [key: string]: ChunkInfo;
         }>
-      >
+      >,
+      routes?: Array<Array<RoadNodeBuilding>>,
+      setRoutes?: React.Dispatch<any>
     ) => {
       const newChunks = chunks!;
       // console.log(newChunks);
@@ -72,18 +81,15 @@ export class PathTool extends Tool {
               console.log("Одна и таже точка");
               return;
             }
-            if (
-              buildingFrom.connects.some((b) =>
-                globalPointIsEqual(b.globalPoint, building.globalPoint)
-              )
-            ) {
-              console.log("Такое соединение уже есть");
-              return;
-            }
-            buildingFrom.connects.push(building);
-            // console.log(buildingFrom.connects);
 
-            setChunks!(newChunks);
+            const buildedPath = buildingFrom.buildPathTo(building);
+            if (buildedPath) {
+              const newRoutes = routes!;
+              newRoutes?.push(buildedPath);
+              setRoutes!(newRoutes);
+            }
+            console.log(buildedPath);
+            // setChunks!(newChunks);
           }
         }
       } else {

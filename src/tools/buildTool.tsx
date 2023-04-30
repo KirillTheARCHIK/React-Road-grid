@@ -26,7 +26,7 @@ export abstract class BuildTool extends Tool {
   constructor(
     name: string,
     label: string,
-    maxClicks: number,
+    maxClicks: number = 1,
     currentClickIndex: number,
     onClick = (
       clickIndex: number,
@@ -94,7 +94,7 @@ export class BuildRoadNodeTool extends BuildTool {
     super(
       building.Name,
       building.label,
-      1,
+      undefined,
       -1,
       undefined,
       (iconStyle) => {

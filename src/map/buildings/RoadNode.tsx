@@ -28,7 +28,7 @@ export const RoadNode = (props: BuildingProps) => {
           outline: isSelected || props.isSelected ? `${CELL_SIZE * 0.1}px solid red` : `${CELL_SIZE * 0.1}px white solid`,
         }}
         onMouseEnter={() => {
-          if (toolContext.selectedTool?.name == TOOLS.road.name) {
+          if (toolContext.selectedTool) {
             setIsSelected(true);
           }
         }}

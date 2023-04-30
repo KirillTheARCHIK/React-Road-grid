@@ -7,6 +7,9 @@ import { Building } from "../buildings";
 import { BuildTool } from "../tools/buildTool";
 import { ChunksContext } from "../context/ChunksContext";
 import { RoadTool } from "../tools/roadTool";
+import { PathTool } from "../tools/pathTool";
+import { RoutesContext } from "../context/RoutesContext";
+import { ClearPathTool } from "../tools/clearPathsTool";
 
 export interface ChunkInfo {
   coords: ChunkPoint;
@@ -18,6 +21,7 @@ export const Chunk = (props: { info: ChunkInfo }) => {
   const { toolContext, setSelectedTool, incrementClickIndex } =
     useContext(ToolContext);
   const { chunks, setChunks } = useContext(ChunksContext);
+  const { routes, setRoutes } = useContext(RoutesContext);
 
   return (
     <div
@@ -42,16 +46,38 @@ export const Chunk = (props: { info: ChunkInfo }) => {
             toolContext.selectedTool?.maxClicks
           ) {
             ////////////////////////////////////////////////////////////////////////////////////////
-            if (toolContext.selectedTool instanceof BuildTool) {
+            // if (toolContext.selectedTool instanceof BuildTool) {
+            //   toolContext.selectedTool?.onClick(
+            //     toolContext.selectedTool?.currentClickIndex + 1,
+            //     { chunkCoords: props.info.coords, localCoords: { x, y } },
+            //     chunks,
+            //     setChunks
+            //   );
+            // } else if (toolContext.selectedTool instanceof RoadTool) {
+            //   // console.log(chunks);
+
+            //   toolContext.selectedTool?.onClick(
+            //     toolContext.selectedTool?.currentClickIndex + 1,
+            //     { chunkCoords: props.info.coords, localCoords: { x, y } },
+            //     chunks,
+            //     setChunks
+            //   );
+            // }
+            // console.log(toolContext.selectedTool);
+
+            if (
+              toolContext.selectedTool instanceof PathTool ||
+              toolContext.selectedTool instanceof ClearPathTool
+            ) {
               toolContext.selectedTool?.onClick(
                 toolContext.selectedTool?.currentClickIndex + 1,
                 { chunkCoords: props.info.coords, localCoords: { x, y } },
                 chunks,
-                setChunks
+                setChunks,
+                routes,
+                setRoutes
               );
-            } else if (toolContext.selectedTool instanceof RoadTool) {
-              // console.log(chunks);
-
+            } else {
               toolContext.selectedTool?.onClick(
                 toolContext.selectedTool?.currentClickIndex + 1,
                 { chunkCoords: props.info.coords, localCoords: { x, y } },
@@ -59,13 +85,6 @@ export const Chunk = (props: { info: ChunkInfo }) => {
                 setChunks
               );
             }
-            // console.log(toolContext.selectedTool);
-            // else {
-            //   toolContext.selectedTool?.onClick(
-            //     toolContext.selectedTool?.currentClickIndex,
-            //     { chunkCoords: props.info.coords, localCoords: { x, y } }
-            //   );
-            // }
             ////////////////////////////////////////////////////////////////////////////////////////
             // console.log(
             //   toolContext.selectedTool?.currentClickIndex + 2 >=
@@ -107,11 +126,14 @@ export const Chunk = (props: { info: ChunkInfo }) => {
       >{`${props.info.coords.x};${props.info.coords.y}`}</p>
       {props.info.buildings.map((building) =>
         building.getIcon({
-          info: building,
           style: {
             left: building.globalPoint.localCoords.x * CELL_SIZE,
             top: building.globalPoint.localCoords.y * CELL_SIZE,
           },
+          info: building,
+          isSelected: routes.some((route) =>
+            route.some((node) => node == building)
+          ),
         })
       )}
     </div>

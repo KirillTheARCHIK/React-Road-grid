@@ -19,6 +19,10 @@ import {
 } from "../context/ToolContext";
 import { ChunkInfo } from "./Chunk";
 import { ChunksContext } from "../context/ChunksContext";
+import {
+  IRoutesContextDefaultValues,
+  RoutesContext,
+} from "../context/RoutesContext";
 
 export const MapFrame = () => {
   const [viewChunksCoords, setViewChunksCoords] = useState(
@@ -34,6 +38,7 @@ export const MapFrame = () => {
   const [toolContext, setToolContext] = useState(
     IToolContextDefaultValues.toolContext
   );
+  const [routes, setRoutes] = useState(IRoutesContextDefaultValues.routes);
 
   function setSelectedTool(selectedTool: Tool) {
     setToolContext({
@@ -80,50 +85,52 @@ export const MapFrame = () => {
       x: window.innerWidth,
       y: window.innerHeight,
     });
-  }, []);  
+  }, []);
 
   return (
-    <ViewChunksCoordsContext.Provider
-      value={{
-        viewChunksCoords,
-        setViewChunksCoords,
-      }}
-    >
-      <FrameSizeContext.Provider
+    <RoutesContext.Provider value={{ routes, setRoutes }}>
+      <ViewChunksCoordsContext.Provider
         value={{
-          frameSize,
-          setFrameSize,
+          viewChunksCoords,
+          setViewChunksCoords,
         }}
       >
-        <ToolContext.Provider
+        <FrameSizeContext.Provider
           value={{
-            toolContext,
-            setToolContext,
-            setSelectedTool,
+            frameSize,
+            setFrameSize,
           }}
         >
-          <ChunksContext.Provider value={{ chunks, setChunks }}>
-            <div
-              style={{
-                width: frameSize.x,
-                height: frameSize.y,
-                overflow: "hidden",
-              }}
-            >
-              <Map chunks={viewChunks} />
+          <ToolContext.Provider
+            value={{
+              toolContext,
+              setToolContext,
+              setSelectedTool,
+            }}
+          >
+            <ChunksContext.Provider value={{ chunks, setChunks }}>
               <div
                 style={{
-                  position: "absolute",
-                  left: "50px",
-                  bottom: "50px",
+                  width: frameSize.x,
+                  height: frameSize.y,
+                  overflow: "hidden",
                 }}
               >
-                <ToolPanel />
+                <Map chunks={viewChunks} />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "50px",
+                    bottom: "50px",
+                  }}
+                >
+                  <ToolPanel />
+                </div>
               </div>
-            </div>
-          </ChunksContext.Provider>
-        </ToolContext.Provider>
-      </FrameSizeContext.Provider>
-    </ViewChunksCoordsContext.Provider>
+            </ChunksContext.Provider>
+          </ToolContext.Provider>
+        </FrameSizeContext.Provider>
+      </ViewChunksCoordsContext.Provider>
+    </RoutesContext.Provider>
   );
 };

@@ -43,6 +43,8 @@ export class RoadNodeBuilding extends Building {
   };
   public connects: RoadNodeBuilding[] = [];
   public buildPathTo(targetNode: RoadNodeBuilding): RoadNodeBuilding[] | undefined{
+    console.log('buildPath');
+    
     return buildPath(this, targetNode);
   }
 
