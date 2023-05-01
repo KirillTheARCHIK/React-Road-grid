@@ -1,6 +1,6 @@
 import { AddRoadOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
-import {  Tool } from "../../tools/Tool";
+import { Tool } from "../../tools/Tool";
 
 export const ToolButton = (props: {
   toolInfo: Tool;
@@ -28,15 +28,14 @@ export const ToolButton = (props: {
     >
       {props.toolInfo.getIcon(iconStyle) ?? null}
       <p>{props.toolInfo.label}</p>
-      {
-        <hr
-          style={{
-            margin: 0,
-            height: 2,
-            backgroundColor: props.isSelected ? iconStyle.color : "#00000000",
-          }}
-        />
-      }
+      <hr
+        style={{
+          margin: 0,
+          height: 2,
+          width: '100%',
+          backgroundColor: props.isSelected ? iconStyle.color : "#00000000",
+        }}
+      />
     </div>
   );
 };

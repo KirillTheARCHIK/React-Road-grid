@@ -74,13 +74,13 @@ export class RoadTool extends Tool {
             }
             if (
               buildingFrom.connects.some((b) =>
-                globalPointIsEqual(b.globalPoint, building.globalPoint)
+                globalPointIsEqual(b, building.globalPoint)
               )
             ) {
               console.log("Такое соединение уже есть");
               return;
             }
-            buildingFrom.connects.push(building);
+            buildingFrom.connects.push(building.globalPoint);
             // console.log(buildingFrom.connects);
 
             setChunks!(newChunks);

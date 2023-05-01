@@ -7,5 +7,4 @@ export const TOOLS = {
   [new BuildRoadNodeTool().name]: new BuildRoadNodeTool(),
   [new RoadTool().name]: new RoadTool(),
   [new PathTool().name]: new PathTool(),
-  [new ClearPathTool().name]: new ClearPathTool(),
 };

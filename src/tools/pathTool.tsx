@@ -82,7 +82,7 @@ export class PathTool extends Tool {
               return;
             }
 
-            const buildedPath = buildingFrom.buildPathTo(building);
+            const buildedPath = buildingFrom.buildPathTo(chunks!, building);
             if (buildedPath) {
               const newRoutes = routes!;
               newRoutes?.push(buildedPath);

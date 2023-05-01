@@ -17,23 +17,21 @@ import {
   IToolContextDefaultValues,
   ToolContext,
 } from "../context/ToolContext";
-import { ChunkInfo } from "./Chunk";
+import { ChunkInfo, ChunkMap } from "./Chunk";
 import { ChunksContext } from "../context/ChunksContext";
 import {
   IRoutesContextDefaultValues,
   RoutesContext,
 } from "../context/RoutesContext";
+import ServicePanel from "./tools/ServicePanel";
+import { Building, findBuilding, RoadNodeBuilding } from "../buildings";
 
 export const MapFrame = () => {
   const [viewChunksCoords, setViewChunksCoords] = useState(
     IViewChunksCoordsContextDefaultValues.viewChunksCoords
   );
   const [frameSize, setFrameSize] = useState({ x: 0, y: 0 });
-  const [chunks, setChunks] = useState(
-    {} as {
-      [key: string]: ChunkInfo;
-    }
-  );
+  const [chunks, setChunks] = useState({} as ChunkMap);
   const [viewChunks, setViewChunks] = useState([[]] as Array<Array<ChunkInfo>>);
   const [toolContext, setToolContext] = useState(
     IToolContextDefaultValues.toolContext
@@ -81,6 +79,52 @@ export const MapFrame = () => {
   }, [viewChunksCoords, frameSize]);
 
   useEffect(() => {
+    // localStorage.setItem("chunks", '{}');
+    const chunksStr = localStorage.getItem("chunks");
+    if (chunksStr) {
+      const cachedChunksJSON = JSON.parse(chunksStr);
+      console.log(cachedChunksJSON);
+      const newChunks: ChunkMap = {};
+      for (const key in cachedChunksJSON) {
+        newChunks[key] = {
+          ...cachedChunksJSON[key],
+          buildings: cachedChunksJSON[key].buildings.map(
+            (buildingJSON: any) => {
+              if (buildingJSON.type == RoadNodeBuilding.Name) {
+                return new RoadNodeBuilding(
+                  buildingJSON.currentClickIndex,
+                  buildingJSON.globalPoint,
+                  buildingJSON.connects,
+                );
+              } else {
+                throw new TypeError("Необработанный тип постройки");
+              }
+            }
+          ),
+        };
+      }
+      // for (const key in newChunks) {
+      //   newChunks[key].buildings.forEach((building, index) => {
+      //     if (building instanceof RoadNodeBuilding) {
+      //       const buildingJSON = cachedChunksJSON[key].buildings[index];
+      //       if (buildingJSON.type == RoadNodeBuilding.Name) {
+      //         buildingJSON.connects.forEach((connect: any) => {
+      //           const findedBuilding = findBuilding(
+      //             newChunks,
+      //             connect.globalPoint
+      //           ) as RoadNodeBuilding;
+      //           if (findedBuilding) {
+      //             building.connects.push(findedBuilding);
+      //           }
+      //         });
+      //       }
+      //     }
+      //   });
+      // }
+      console.log(newChunks);
+      setChunks(newChunks);
+    }
+
     setFrameSize({
       x: window.innerWidth,
       y: window.innerHeight,
@@ -125,6 +169,15 @@ export const MapFrame = () => {
                   }}
                 >
                   <ToolPanel />
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "50px",
+                    bottom: "50px",
+                  }}
+                >
+                  <ServicePanel />
                 </div>
               </div>
             </ChunksContext.Provider>

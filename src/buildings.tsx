@@ -1,13 +1,21 @@
 import { ReactElement } from "react";
-import { GlobalPoint, GlobalPointConnect } from "./coords";
+import {
+  ChunkPoint,
+  chunkPointIsEqual,
+  chunkPointToString,
+  GlobalPoint,
+  GlobalPointConnect,
+} from "./coords";
 import { RoadNode } from "./map/buildings/RoadNode";
 import React from "react";
 import { buildPath } from "./graph";
+import { ChunkInfo, ChunkMap } from "./map/Chunk";
 
-export type BuildingProps = React.InputHTMLAttributes<HTMLInputElement> & React.ClassAttributes<HTMLInputElement> & {
-  info: Building;
-  isSelected?: Boolean;
-};
+export type BuildingProps = React.InputHTMLAttributes<HTMLInputElement> &
+  React.ClassAttributes<HTMLInputElement> & {
+    info: Building;
+    isSelected?: Boolean;
+  };
 export class Building {
   public static Name: string;
   public static label: string;
@@ -22,13 +30,23 @@ export class Building {
     public globalPoint: GlobalPoint
   ) {}
 
-  public distanceTo( otherBuilding: Building){
+  public distanceTo(otherBuilding: Building) {
     return new GlobalPointConnect(this.globalPoint, otherBuilding.globalPoint);
   }
 }
 
+export function findBuilding(chunks: ChunkMap, coords: GlobalPoint) {
+  const chunk = chunks[chunkPointToString(coords.chunkCoords)];
+  return chunk.buildings.find(
+    (value) =>
+      value instanceof RoadNodeBuilding &&
+      chunkPointIsEqual(value.globalPoint.localCoords, coords.localCoords)
+  );
+}
+
 export class RoadNodeBuilding extends Building {
   public static Name = "road_node";
+  public type = "road_node";
   public static label = "Узел дороги";
   public getIcon: (props: BuildingProps) => ReactElement = (props) => {
     return <RoadNode {...props} />;
@@ -41,14 +59,29 @@ export class RoadNodeBuilding extends Building {
     if (clickIndex == 0) {
     }
   };
-  public connects: RoadNodeBuilding[] = [];
-  public buildPathTo(targetNode: RoadNodeBuilding): RoadNodeBuilding[] | undefined{
-    console.log('buildPath');
-    
-    return buildPath(this, targetNode);
+  public buildPathTo(
+    chunks: ChunkMap,
+    targetNode: RoadNodeBuilding
+  ): RoadNodeBuilding[] | undefined {
+    console.log("buildPath");
+
+    return buildPath(chunks, this, targetNode);
   }
 
-  constructor(currentClickIndex: number = -1, globalPoint: GlobalPoint) {
+  constructor(
+    currentClickIndex: number = -1,
+    globalPoint: GlobalPoint,
+    public connects: GlobalPoint[] = []
+  ) {
     super(-1, globalPoint);
   }
+
+  // public toString() {
+  //   return JSON.stringify({
+  //     Name: RoadNodeBuilding.Name,
+  //     currentClickIndex: this.currentClickIndex,
+  //     globalPoint: this.globalPoint,
+  //     connects: this.connects.map((con) => con.globalPoint),
+  //   });
+  // }
 }

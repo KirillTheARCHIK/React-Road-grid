@@ -17,6 +17,10 @@ export interface ChunkInfo {
   buildings: Array<Building>;
 }
 
+export interface ChunkMap{
+  [key: string]: ChunkInfo;
+}
+
 export const Chunk = (props: { info: ChunkInfo }) => {
   const { toolContext, setSelectedTool, incrementClickIndex } =
     useContext(ToolContext);

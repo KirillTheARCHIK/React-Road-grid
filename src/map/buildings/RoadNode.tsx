@@ -36,10 +36,10 @@ export const RoadNode = (props: BuildingProps) => {
           setIsSelected(false);
         }}
       ></div>
-      {(props.info! as RoadNodeBuilding).connects.map((connectBuilding) => {
+      {(props.info! as RoadNodeBuilding).connects.map((connectBuildingPoint) => {
         const connectInfo = new GlobalPointConnect(
           (props.info! as RoadNodeBuilding).globalPoint,
-          connectBuilding.globalPoint
+          connectBuildingPoint
         );
         return (
           <div
