@@ -10,6 +10,8 @@ const ToolPanel = () => {
     <div
       className="round-gray-border"
       style={{
+        position: "relative",
+        zIndex: 10000,
         display: "flex",
         flexDirection: "row",
         // minHeight: 100,
