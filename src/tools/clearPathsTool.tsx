@@ -8,6 +8,7 @@ import {
   globalPointIsEqual,
 } from "../coords";
 import { ChunkInfo } from "../map/Chunk";
+import { Vehicle } from "../map/vehicles/Vehicle";
 import { Route } from "./pathTool";
 import { Tool } from "./Tool";
 
@@ -27,8 +28,8 @@ export class ClearPathTool extends Tool {
         [key: string]: ChunkInfo;
       }>
     >,
-    routes?: Array<Route>,
-    setRoutes?: React.Dispatch<any>
+    vehicles?: Array<Vehicle>,
+    setVehicles?: React.Dispatch<any>
   ) => void;
 
   constructor(
@@ -43,10 +44,10 @@ export class ClearPathTool extends Tool {
           [key: string]: ChunkInfo;
         }>
       >,
-      routes?: Array<Route>,
-      setRoutes?: React.Dispatch<any>
+      vehicles?: Array<Vehicle>,
+      setVehicles?: React.Dispatch<any>
     ) => {
-        setRoutes!([]);
+        setVehicles!([]);
     }
   ) {
     super("clear_paths", "Очистить маршруты", 1, -1, onClick, (iconStyle) => {

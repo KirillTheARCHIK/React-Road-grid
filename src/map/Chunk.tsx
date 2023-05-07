@@ -1,14 +1,14 @@
 import { CELL_SIZE, CHUNK_SIZE, CHUNK_SIZE_IN_PX } from "../const";
 import React from "react";
 import { useContext } from "react";
-import { ChunkPoint } from "../coords";
+import { ChunkPoint, globalPointIsEqual } from "../coords";
 import { ToolContext } from "../context/ToolContext";
 import { Building } from "../buildings";
 import { BuildTool } from "../tools/buildTool";
 import { ChunksContext } from "../context/ChunksContext";
 import { RoadTool } from "../tools/roadTool";
 import { PathTool } from "../tools/pathTool";
-import { RoutesContext } from "../context/RoutesContext";
+import { VehiclesContext } from "../context/VehiclesContext";
 import { ClearPathTool } from "../tools/clearPathsTool";
 import { Vehicle } from "./vehicles/Vehicle";
 
@@ -18,7 +18,7 @@ export interface ChunkInfo {
   buildings: Building[];
 }
 
-export interface ChunkMap{
+export interface ChunkMap {
   [key: string]: ChunkInfo;
 }
 
@@ -26,7 +26,7 @@ export const Chunk = (props: { info: ChunkInfo }) => {
   const { toolContext, setSelectedTool, incrementClickIndex } =
     useContext(ToolContext);
   const { chunks, setChunks } = useContext(ChunksContext);
-  const { routes, setRoutes } = useContext(RoutesContext);
+  const { vehicles, setVehicles } = useContext(VehiclesContext);
 
   return (
     <div
@@ -79,8 +79,8 @@ export const Chunk = (props: { info: ChunkInfo }) => {
                 { chunkCoords: props.info.coords, localCoords: { x, y } },
                 chunks,
                 setChunks,
-                routes,
-                setRoutes
+                vehicles,
+                setVehicles
               );
             } else {
               toolContext.selectedTool?.onClick(
@@ -136,8 +136,12 @@ export const Chunk = (props: { info: ChunkInfo }) => {
             top: building.globalPoint.localCoords.y * CELL_SIZE,
           },
           info: building,
-          isSelected: routes.some((route) =>
-            route.some((connect) => connect.from == building.globalPoint || connect.to == building.globalPoint)
+          isSelected: vehicles.some((vehicle) =>
+            vehicle.restRoute.some(
+              (connect) =>
+                globalPointIsEqual(connect.from, building.globalPoint) ||
+                globalPointIsEqual(connect.to, building.globalPoint)
+            )
           ),
         })
       )}

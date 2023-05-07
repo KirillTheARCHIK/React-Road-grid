@@ -20,11 +20,12 @@ import {
 import { ChunkInfo, ChunkMap } from "./Chunk";
 import { ChunksContext } from "../context/ChunksContext";
 import {
-  IRoutesContextDefaultValues,
-  RoutesContext,
-} from "../context/RoutesContext";
+  IVehiclesContextDefaultValues,
+  VehiclesContext,
+} from "../context/VehiclesContext";
 import ServicePanel from "./tools/ServicePanel";
 import { Building, findBuilding, RoadNodeBuilding } from "../buildings";
+import { moveVehicles } from "./vehicles/Vehicle";
 
 export const MapFrame = () => {
   const [viewChunksCoords, setViewChunksCoords] = useState(
@@ -36,7 +37,9 @@ export const MapFrame = () => {
   const [toolContext, setToolContext] = useState(
     IToolContextDefaultValues.toolContext
   );
-  const [routes, setRoutes] = useState(IRoutesContextDefaultValues.routes);
+  const [vehicles, setVehicles] = useState(
+    IVehiclesContextDefaultValues.vehicles
+  );
 
   function setSelectedTool(selectedTool: Tool) {
     setToolContext({
@@ -94,7 +97,7 @@ export const MapFrame = () => {
                 return new RoadNodeBuilding(
                   buildingJSON.currentClickIndex,
                   buildingJSON.globalPoint,
-                  buildingJSON.connects,
+                  buildingJSON.connects
                 );
               } else {
                 throw new TypeError("Необработанный тип постройки");
@@ -103,24 +106,6 @@ export const MapFrame = () => {
           ),
         };
       }
-      // for (const key in newChunks) {
-      //   newChunks[key].buildings.forEach((building, index) => {
-      //     if (building instanceof RoadNodeBuilding) {
-      //       const buildingJSON = cachedChunksJSON[key].buildings[index];
-      //       if (buildingJSON.type == RoadNodeBuilding.Name) {
-      //         buildingJSON.connects.forEach((connect: any) => {
-      //           const findedBuilding = findBuilding(
-      //             newChunks,
-      //             connect.globalPoint
-      //           ) as RoadNodeBuilding;
-      //           if (findedBuilding) {
-      //             building.connects.push(findedBuilding);
-      //           }
-      //         });
-      //       }
-      //     }
-      //   });
-      // }
       console.log(newChunks);
       setChunks(newChunks);
     }
@@ -131,8 +116,18 @@ export const MapFrame = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const intervalMs = 1000;
+    setInterval(() => {
+      setVehicles((vs) => moveVehicles(vs, intervalMs / 1000));
+    }, intervalMs);
+  }, []);
+
+  // console.log(chunks['0;0']);
+  
+
   return (
-    <RoutesContext.Provider value={{ routes, setRoutes }}>
+    <VehiclesContext.Provider value={{ vehicles, setVehicles }}>
       <ViewChunksCoordsContext.Provider
         value={{
           viewChunksCoords,
@@ -184,6 +179,6 @@ export const MapFrame = () => {
           </ToolContext.Provider>
         </FrameSizeContext.Provider>
       </ViewChunksCoordsContext.Provider>
-    </RoutesContext.Provider>
+    </VehiclesContext.Provider>
   );
 };

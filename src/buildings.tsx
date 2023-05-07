@@ -79,7 +79,6 @@ export class RoadNodeBuilding extends Building {
     currentClickIndex: number = -1,
     globalPoint: GlobalPoint,
     public connects: GlobalPointConnect[] = [],
-    public vehicles: Vehicle[] = []
   ) {
     super(-1, globalPoint);
   }

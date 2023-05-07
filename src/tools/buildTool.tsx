@@ -2,10 +2,7 @@ import React from "react";
 import { Building, RoadNodeBuilding } from "../buildings";
 import { ChunkInfo } from "../map/Chunk";
 import { Traffic } from "@mui/icons-material";
-import {
-  GlobalPoint,
-  chunkPointToString,
-} from "../coords";
+import { GlobalPoint, chunkPointToString } from "../coords";
 import { Tool } from "./Tool";
 import { ReactElement } from "react";
 
@@ -78,8 +75,10 @@ export function buildOnChunk(
   if (
     chunk.buildings.every(
       (value) =>
-        value.globalPoint.localCoords.x != cellCoords.localCoords.x &&
-        value.globalPoint.localCoords.y != cellCoords.localCoords.y
+        !(
+          value.globalPoint.localCoords.x == cellCoords.localCoords.x &&
+          value.globalPoint.localCoords.y == cellCoords.localCoords.y
+        )
     )
   ) {
     chunk.buildings.push(building);

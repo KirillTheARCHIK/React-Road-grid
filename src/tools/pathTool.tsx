@@ -30,8 +30,8 @@ export class PathTool extends Tool {
         [key: string]: ChunkInfo;
       }>
     >,
-    routes?: Array<Route>,
-    setRoutes?: React.Dispatch<any>
+    vehicles?: Array<Vehicle>,
+    setVehicles?: React.Dispatch<any>
   ) => void;
 
   constructor(
@@ -46,8 +46,8 @@ export class PathTool extends Tool {
           [key: string]: ChunkInfo;
         }>
       >,
-      routes?: Array<Route>,
-      setRoutes?: React.Dispatch<any>
+      vehicles?: Array<Vehicle>,
+      setVehicles?: React.Dispatch<any>
     ) => {
       const newChunks = chunks!;
       // console.log(newChunks);
@@ -88,11 +88,9 @@ export class PathTool extends Tool {
 
             const buildedPath = buildingFrom.buildPathTo(chunks!, building);
             if (buildedPath) {
-              const newRoutes = routes!;
-              newRoutes?.push(buildedPath);
-              setRoutes!(newRoutes);
-              buildingFrom.vehicles.push(new Vehicle(buildedPath, buildedPath));
-              setChunks!(newChunks);
+              const newVehicles = vehicles!;
+              newVehicles?.push(new Vehicle(buildedPath, buildedPath, 0, 100));
+              setVehicles!(newVehicles);
             }
             console.log(buildedPath);
             // setChunks!(newChunks);

@@ -6,26 +6,26 @@ import { Route } from "../../tools/pathTool";
 import { Vehicle } from "./Vehicle";
 
 export const Car = (props: { info: Vehicle }) => {
-  const carRef = useRef<HTMLDivElement>(null);
-  const { chunks, setChunks } = useContext(ChunksContext);
+  // const carRef = useRef<HTMLDivElement>(null);
+  // const { chunks, setChunks } = useContext(ChunksContext);
 
-  useEffect(() => {
-    carRef.current?.animate([{}, { top: "0px" }], {
-      duration: 5000,
-      iterations: 1,
+  // useEffect(() => {
+  //   carRef.current?.animate([{}, { top: "0px" }], {
+  //     duration: 5000,
+  //     iterations: 1,
       
-    });
-  }, []);
+  //   });
+  // }, []);
 
   return (
     <div
-      ref={carRef}
+      // ref={carRef}
       style={{
         position: "absolute",
-        top: "100%",
+        bottom: `${props.info.currentPosOnRoadPx}px`,
         width: 0,
         height: 0,
-        left: "50%",
+        left: "80%",
         zIndex: 1000,
       }}
     >

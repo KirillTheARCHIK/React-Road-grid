@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { BuildingProps, RoadNodeBuilding } from "../../buildings";
 import { CELL_SIZE } from "../../const";
 import { ToolContext } from "../../context/ToolContext";
+import { VehiclesContext } from "../../context/VehiclesContext";
 import { GlobalPointConnect, globalPointIsEqual } from "../../coords";
 import { TOOLS } from "../../tools/tools";
 import { RoadLine } from "./RoadLine";
 
 export const RoadNode = (props: BuildingProps) => {
   const { toolContext } = useContext(ToolContext);
+  const { vehicles, setVehicles } = useContext(VehiclesContext);
   const [isSelected, setIsSelected] = useState(false);
   const info = props.info as RoadNodeBuilding;
 
@@ -48,12 +50,16 @@ export const RoadNode = (props: BuildingProps) => {
           return (
             <RoadLine
               connection={connectBuildingPoint}
-              vehicles={info.vehicles.filter(
+              vehicles={vehicles.filter(
                 (vehicle) =>
-                  vehicle.restRoute.length >= 2 &&
+                  vehicle.restRoute.length >= 1 &&
                   globalPointIsEqual(
                     vehicle.restRoute[0].to,
                     connectBuildingPoint.to
+                  )&&
+                  globalPointIsEqual(
+                    vehicle.restRoute[0].from,
+                    connectBuildingPoint.from
                   )
               )}
             />
