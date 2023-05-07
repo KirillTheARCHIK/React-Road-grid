@@ -47,14 +47,13 @@ export const RoadNode = (props: BuildingProps) => {
         (connectBuildingPoint) => {
           return (
             <RoadLine
-              from={info.globalPoint}
-              to={connectBuildingPoint}
+              connection={connectBuildingPoint}
               vehicles={info.vehicles.filter(
                 (vehicle) =>
                   vehicle.restRoute.length >= 2 &&
                   globalPointIsEqual(
-                    vehicle.restRoute[1].globalPoint,
-                    connectBuildingPoint
+                    vehicle.restRoute[0].to,
+                    connectBuildingPoint.to
                   )
               )}
             />

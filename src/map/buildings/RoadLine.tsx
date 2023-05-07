@@ -6,12 +6,9 @@ import { Car } from "../vehicles/Car";
 import { Vehicle } from "../vehicles/Vehicle";
 
 export const RoadLine = (props: {
-  from: GlobalPoint;
-  to: GlobalPoint;
+  connection: GlobalPointConnect;
   vehicles: Vehicle[];
 }) => {
-  const connectInfo = new GlobalPointConnect(props.from, props.to);
-
   return (
     <div
       style={{
@@ -19,7 +16,7 @@ export const RoadLine = (props: {
         height: CELL_SIZE * 1,
         position: "absolute",
         zIndex: 100,
-        transform: `rotate(${connectInfo.azimuthDeg}deg)`,
+        transform: `rotate(${props.connection.azimuthDeg}deg)`,
         // translate: `${CELL_SIZE * 0.1}px ${CELL_SIZE * 0.1}px`,
         transformOrigin: `center`,
       }}
@@ -28,7 +25,7 @@ export const RoadLine = (props: {
         className="road_line"
         style={{
           width: `${CELL_SIZE * 0.4}px`,
-          height: `${connectInfo.distancePx - CELL_SIZE * 0.5}px`,
+          height: `${props.connection.distancePx - CELL_SIZE * 0.5}px`,
           zIndex: "inherit",
           position: "absolute",
           backgroundColor: "#3A3935",
@@ -46,7 +43,7 @@ export const RoadLine = (props: {
         className="road_line_dash"
         style={{
           width: `${CELL_SIZE * 0.1}px`,
-          height: `${connectInfo.distancePx - CELL_SIZE * 0.5}px`,
+          height: `${props.connection.distancePx - CELL_SIZE * 0.5}px`,
           zIndex: "inherit",
           position: "absolute",
           backgroundColor: "#3A3935",

@@ -34,7 +34,7 @@ export class DeleteTool extends Tool {
               newChunks[key].buildings.forEach((building) => {
                 if (building && building instanceof RoadNodeBuilding) {
                   building.connects = building.connects.filter(
-                    (con) => !globalPointIsEqual(con, cellCoords)
+                    (con) => !globalPointIsEqual(con.to, cellCoords)
                   );
                 }
               });

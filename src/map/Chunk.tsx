@@ -137,7 +137,7 @@ export const Chunk = (props: { info: ChunkInfo }) => {
           },
           info: building,
           isSelected: routes.some((route) =>
-            route.some((node) => node == building)
+            route.some((connect) => connect.from == building.globalPoint || connect.to == building.globalPoint)
           ),
         })
       )}

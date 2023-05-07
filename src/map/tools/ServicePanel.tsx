@@ -37,8 +37,9 @@ const ServicePanel = () => {
     </div>
     <div
       className="tool-button f-c"
-      onClick={() => {
+      onClick={() => {        
         localStorage.setItem('chunks', JSON.stringify(chunks));
+        // localStorage.setItem('chunks', '{}');
       }}
     >
       <Save style={iconStyle} />

@@ -82,7 +82,7 @@ export const MapFrame = () => {
     // localStorage.setItem("chunks", '{}');
     const chunksStr = localStorage.getItem("chunks");
     if (chunksStr) {
-      const cachedChunksJSON = JSON.parse(chunksStr);
+      const cachedChunksJSON = JSON.parse(chunksStr) ?? {};
       console.log(cachedChunksJSON);
       const newChunks: ChunkMap = {};
       for (const key in cachedChunksJSON) {

@@ -1,7 +1,13 @@
 import { AddRoadOutlined } from "@mui/icons-material";
 import React from "react";
 import { RoadNodeBuilding } from "../buildings";
-import { chunkPointIsEqual, chunkPointToString, GlobalPoint, globalPointIsEqual } from "../coords";
+import {
+  chunkPointIsEqual,
+  chunkPointToString,
+  GlobalPoint,
+  GlobalPointConnect,
+  globalPointIsEqual,
+} from "../coords";
 import { ChunkInfo } from "../map/Chunk";
 import { Tool } from "./Tool";
 
@@ -74,13 +80,18 @@ export class RoadTool extends Tool {
             }
             if (
               buildingFrom.connects.some((b) =>
-                globalPointIsEqual(b, building.globalPoint)
+                globalPointIsEqual(b.to, building.globalPoint)
               )
             ) {
               console.log("Такое соединение уже есть");
               return;
             }
-            buildingFrom.connects.push(building.globalPoint);
+            buildingFrom.connects.push(
+              GlobalPointConnect.from2Points(
+                buildingFrom.globalPoint,
+                building.globalPoint
+              )
+            );
             // console.log(buildingFrom.connects);
 
             setChunks!(newChunks);

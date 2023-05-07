@@ -1,4 +1,4 @@
-import { CancelOutlined, Route } from "@mui/icons-material";
+import { CancelOutlined } from "@mui/icons-material";
 import React from "react";
 import { RoadNodeBuilding } from "../buildings";
 import {
@@ -8,6 +8,7 @@ import {
   globalPointIsEqual,
 } from "../coords";
 import { ChunkInfo } from "../map/Chunk";
+import { Route } from "./pathTool";
 import { Tool } from "./Tool";
 
 var pathToolCache = {} as {
@@ -26,7 +27,7 @@ export class ClearPathTool extends Tool {
         [key: string]: ChunkInfo;
       }>
     >,
-    routes?: Array<Array<RoadNodeBuilding>>,
+    routes?: Array<Route>,
     setRoutes?: React.Dispatch<any>
   ) => void;
 
@@ -42,7 +43,7 @@ export class ClearPathTool extends Tool {
           [key: string]: ChunkInfo;
         }>
       >,
-      routes?: Array<Array<RoadNodeBuilding>>,
+      routes?: Array<Route>,
       setRoutes?: React.Dispatch<any>
     ) => {
         setRoutes!([]);

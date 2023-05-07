@@ -24,14 +24,26 @@ export interface GlobalPoint {
 }
 
 export function globalPointIsEqual(p1: GlobalPoint, p2: GlobalPoint) {
-  return chunkPointIsEqual(p1.chunkCoords, p2.chunkCoords) && chunkPointIsEqual(p1.localCoords, p2.localCoords);
+  return (
+    chunkPointIsEqual(p1.chunkCoords, p2.chunkCoords) &&
+    chunkPointIsEqual(p1.localCoords, p2.localCoords)
+  );
 }
 
 export class GlobalPointConnect {
+  from: GlobalPoint;
+  to: GlobalPoint;
   distancePx: number;
   azimuthDeg: number;
 
-  constructor(p1: GlobalPoint, p2: GlobalPoint) {
+  constructor(from: GlobalPoint, to: GlobalPoint, distancePx: number, azimuthDeg: number) {
+    this.from = from;
+    this.to = to;
+    this.distancePx = distancePx;
+    this.azimuthDeg = azimuthDeg;
+  }
+
+  public static from2Points(p1: GlobalPoint, p2: GlobalPoint) {
     const p1Px = {
       x: p1.chunkCoords.x * CHUNK_SIZE_IN_PX + p1.localCoords.x * CELL_SIZE,
       y: p1.chunkCoords.y * CHUNK_SIZE_IN_PX - p1.localCoords.y * CELL_SIZE,
@@ -41,16 +53,12 @@ export class GlobalPointConnect {
       y: p2.chunkCoords.y * CHUNK_SIZE_IN_PX - p2.localCoords.y * CELL_SIZE,
     } as Point;
     // console.log({p1Px, p2Px});
-    
 
-    this.distancePx = Math.sqrt(
+    const distancePx = Math.sqrt(
       Math.pow(p2Px.x - p1Px.x, 2) + Math.pow(p2Px.y - p1Px.y, 2)
     );
 
-    var pathVector = [
-      p2Px.x - p1Px.x,
-      p2Px.y - p1Px.y,
-    ];
+    var pathVector = [p2Px.x - p1Px.x, p2Px.y - p1Px.y];
     var northVector = [0, 1];
     const isRight = pathVector[0] > 0;
     let corner =
@@ -66,6 +74,8 @@ export class GlobalPointConnect {
     if (isNaN(corner)) {
       corner = 180;
     }
-    this.azimuthDeg = isRight ? corner : 360 - corner;
+    const azimuthDeg = isRight ? corner : 360 - corner;
+
+    return new GlobalPointConnect(p1, p2, distancePx, azimuthDeg);
   }
 }

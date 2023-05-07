@@ -1,8 +1,9 @@
 import { createContext } from "react";
 import { RoadNodeBuilding } from "../buildings";
+import { Route } from "../tools/pathTool";
 
 export interface IRoutesContext{
-  routes: Array<Array<RoadNodeBuilding>>,
+  routes: Array<Route>,
   setRoutes?: React.Dispatch<any>,
 }
 
