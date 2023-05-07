@@ -8,7 +8,10 @@ import {
   globalPointIsEqual,
 } from "../coords";
 import { ChunkInfo } from "../map/Chunk";
+import { Vehicle } from "../map/vehicles/Vehicle";
 import { Tool } from "./Tool";
+
+export type Route=Array<RoadNodeBuilding>;
 
 var pathToolCache = {} as {
   from?: GlobalPoint;
@@ -26,7 +29,7 @@ export class PathTool extends Tool {
         [key: string]: ChunkInfo;
       }>
     >,
-    routes?: Array<Array<RoadNodeBuilding>>,
+    routes?: Array<Route>,
     setRoutes?: React.Dispatch<any>
   ) => void;
 
@@ -87,6 +90,10 @@ export class PathTool extends Tool {
               const newRoutes = routes!;
               newRoutes?.push(buildedPath);
               setRoutes!(newRoutes);
+              buildingFrom.vehicles.push(new Vehicle(
+                buildedPath, buildedPath
+              ));
+              setChunks!(newChunks);
             }
             console.log(buildedPath);
             // setChunks!(newChunks);

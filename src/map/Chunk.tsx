@@ -10,11 +10,12 @@ import { RoadTool } from "../tools/roadTool";
 import { PathTool } from "../tools/pathTool";
 import { RoutesContext } from "../context/RoutesContext";
 import { ClearPathTool } from "../tools/clearPathsTool";
+import { Vehicle } from "./vehicles/Vehicle";
 
 export interface ChunkInfo {
   coords: ChunkPoint;
   coordsStr: string;
-  buildings: Array<Building>;
+  buildings: Building[];
 }
 
 export interface ChunkMap{

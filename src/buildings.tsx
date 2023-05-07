@@ -10,6 +10,7 @@ import { RoadNode } from "./map/buildings/RoadNode";
 import React from "react";
 import { buildPath } from "./graph";
 import { ChunkInfo, ChunkMap } from "./map/Chunk";
+import { Vehicle } from "./map/vehicles/Vehicle";
 
 export type BuildingProps = React.InputHTMLAttributes<HTMLInputElement> &
   React.ClassAttributes<HTMLInputElement> & {
@@ -71,7 +72,8 @@ export class RoadNodeBuilding extends Building {
   constructor(
     currentClickIndex: number = -1,
     globalPoint: GlobalPoint,
-    public connects: GlobalPoint[] = []
+    public connects: GlobalPoint[] = [],
+    public vehicles: Vehicle[] = []
   ) {
     super(-1, globalPoint);
   }
