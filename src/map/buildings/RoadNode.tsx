@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { BuildingProps, RoadNodeBuilding } from "../../buildings";
-import { CELL_SIZE } from "../../const";
+import { CELL_SIZE, CELL_SIZE_WITH_ZOOM } from "../../const";
 import { ToolContext } from "../../context/ToolContext";
 import { VehiclesContext } from "../../context/VehiclesContext";
 import { GlobalPointConnect, globalPointIsEqual } from "../../coords";
@@ -16,25 +16,25 @@ export const RoadNode = (props: BuildingProps) => {
   return (
     <div
       style={{
-        width: CELL_SIZE,
-        height: CELL_SIZE,
+        width: CELL_SIZE_WITH_ZOOM(),
+        height: CELL_SIZE_WITH_ZOOM(),
         position: "absolute",
         ...props.style,
       }}
     >
       <div
         style={{
-          width: CELL_SIZE * 1,
-          height: CELL_SIZE * 1,
+          width: CELL_SIZE_WITH_ZOOM() * 1,
+          height: CELL_SIZE_WITH_ZOOM() * 1,
           borderRadius: 1000,
           zIndex: 1000,
           backgroundColor: "#3A3935",
-          // translate: `${CELL_SIZE * 0.1}px ${CELL_SIZE * 0.1}px`,
+          // translate: `${CELL_SIZE_WITH_ZOOM() * 0.1}px ${CELL_SIZE_WITH_ZOOM() * 0.1}px`,
           position: "absolute",
           outline:
             isSelected || props.isSelected
-              ? `${CELL_SIZE * 0.1}px solid red`
-              : `${CELL_SIZE * 0.1}px white solid`,
+              ? `${CELL_SIZE_WITH_ZOOM() * 0.1}px solid red`
+              : `${CELL_SIZE_WITH_ZOOM() * 0.1}px white solid`,
         }}
         onMouseEnter={() => {
           if (toolContext.selectedTool) {

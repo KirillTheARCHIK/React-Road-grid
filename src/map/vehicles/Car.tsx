@@ -1,6 +1,7 @@
 import { Navigation, NavigationOutlined } from "@mui/icons-material";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { RoadNodeBuilding } from "../../buildings";
+import { CELL_SIZE_WITH_ZOOM, ZOOM } from "../../const";
 import { ChunksContext } from "../../context/ChunksContext";
 import { Route } from "../../tools/pathTool";
 import { Vehicle } from "./Vehicle";
@@ -22,7 +23,7 @@ export const Car = (props: { info: Vehicle }) => {
       // ref={carRef}
       style={{
         position: "absolute",
-        bottom: `${props.info.currentPosOnRoadPx}px`,
+        bottom: `${props.info.currentPosOnRoadPx * ZOOM}px`,
         width: 0,
         height: 0,
         left: "80%",
@@ -32,7 +33,7 @@ export const Car = (props: { info: Vehicle }) => {
       <Navigation
         style={{
           position: "absolute",
-          fontSize: "30px",
+          fontSize: `${CELL_SIZE_WITH_ZOOM()}px`,
           color: "#0f0",
           translate: "-50% -50%",
         }}

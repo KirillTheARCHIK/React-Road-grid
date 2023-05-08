@@ -1,22 +1,13 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect } from "react";
 import Map from "./Map";
-import { CHUNK_SIZE_IN_PX } from "../const";
 import ToolPanel from "./tools/ToolPanel";
 import { Tool } from "../tools/Tool";
 import {
-  IViewChunksCoordsContext,
   IViewChunksCoordsContextDefaultValues,
   ViewChunksCoordsContext,
 } from "../context/ViewChunksCoordsContext";
-import {
-  FrameSizeContext,
-  IFrameSizeContext,
-} from "../context/FrameSizeContext";
-import {
-  IToolContext,
-  IToolContextDefaultValues,
-  ToolContext,
-} from "../context/ToolContext";
+import { FrameSizeContext } from "../context/FrameSizeContext";
+import { IToolContextDefaultValues, ToolContext } from "../context/ToolContext";
 import { ChunkInfo, ChunkMap } from "./Chunk";
 import { ChunksContext } from "../context/ChunksContext";
 import {
@@ -24,8 +15,9 @@ import {
   VehiclesContext,
 } from "../context/VehiclesContext";
 import ServicePanel from "./tools/ServicePanel";
-import { Building, findBuilding, RoadNodeBuilding } from "../buildings";
+import { RoadNodeBuilding } from "../buildings";
 import { moveVehicles } from "./vehicles/Vehicle";
+import { MapControlPanel } from "./controls/MapControlPanel";
 
 export const MapFrame = () => {
   const [viewChunksCoords, setViewChunksCoords] = useState(
@@ -117,14 +109,13 @@ export const MapFrame = () => {
   }, []);
 
   useEffect(() => {
-    const intervalMs = 1000;
+    const intervalMs = 250;
     setInterval(() => {
       setVehicles((vs) => moveVehicles(vs, intervalMs / 1000));
     }, intervalMs);
   }, []);
 
   // console.log(chunks['0;0']);
-  
 
   return (
     <VehiclesContext.Provider value={{ vehicles, setVehicles }}>
@@ -173,6 +164,15 @@ export const MapFrame = () => {
                   }}
                 >
                   <ServicePanel />
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "20px",
+                    top: "20px",
+                  }}
+                >
+                  <MapControlPanel />
                 </div>
               </div>
             </ChunksContext.Provider>

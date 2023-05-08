@@ -1,7 +1,6 @@
 import { PathTool } from "./pathTool";
 import { RoadTool } from "./roadTool";
 import { BuildRoadNodeTool} from "./buildTool";
-import { ClearPathTool } from "./clearPathsTool";
 import { DeleteTool } from "./deleteTool";
 
 export const TOOLS = {

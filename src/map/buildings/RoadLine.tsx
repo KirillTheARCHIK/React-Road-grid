@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RoadNodeBuilding } from "../../buildings";
-import { CELL_SIZE } from "../../const";
+import { CELL_SIZE, CELL_SIZE_WITH_ZOOM, ZOOM } from "../../const";
 import { GlobalPoint, GlobalPointConnect } from "../../coords";
 import { Car } from "../vehicles/Car";
 import { Vehicle } from "../vehicles/Vehicle";
@@ -12,27 +12,27 @@ export const RoadLine = (props: {
   return (
     <div
       style={{
-        width: CELL_SIZE * 1,
-        height: CELL_SIZE * 1,
+        width: CELL_SIZE_WITH_ZOOM() * 1,
+        height: CELL_SIZE_WITH_ZOOM() * 1,
         position: "absolute",
         zIndex: 100,
         transform: `rotate(${props.connection.azimuthDeg}deg)`,
-        // translate: `${CELL_SIZE * 0.1}px ${CELL_SIZE * 0.1}px`,
+        // translate: `${CELL_SIZE_WITH_ZOOM() * 0.1}px ${CELL_SIZE_WITH_ZOOM() * 0.1}px`,
         transformOrigin: `center`,
       }}
     >
       <div
         className="road_line"
         style={{
-          width: `${CELL_SIZE * 0.4}px`,
-          height: `${props.connection.distancePx - CELL_SIZE * 0.5}px`,
+          width: `${CELL_SIZE_WITH_ZOOM() * 0.4}px`,
+          height: `${(props.connection.distancePx - CELL_SIZE * 0.5) * ZOOM}px`,
           zIndex: "inherit",
           position: "absolute",
           backgroundColor: "#3A3935",
-          borderLeft: "4px white dashed",
-          transform: `translate(${CELL_SIZE * 0.4}px, calc(-100% + ${
-            CELL_SIZE * 0.2
-          }px) )`,
+          borderLeft: `${CELL_SIZE_WITH_ZOOM() / 8}px white dashed`,
+          transform: `translate(${
+            CELL_SIZE_WITH_ZOOM() * 0.4
+          }px, calc(-100% + ${CELL_SIZE_WITH_ZOOM() * 0.2}px) )`,
         }}
       >
         {props.vehicles.map((vehicle) => (
@@ -43,7 +43,7 @@ export const RoadLine = (props: {
         className="road_line_dash"
         style={{
           width: `${CELL_SIZE * 0.1}px`,
-          height: `${props.connection.distancePx - CELL_SIZE * 0.5}px`,
+          height: `${(props.connection.distancePx - CELL_SIZE)*ZOOM * 0.5}px`,
           zIndex: "inherit",
           position: "absolute",
           backgroundColor: "#3A3935",
