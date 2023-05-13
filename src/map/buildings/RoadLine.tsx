@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { RoadNodeBuilding } from "../../buildings";
 import { CELL_SIZE, CELL_SIZE_WITH_ZOOM, ZOOM } from "../../const";
-import { GlobalPoint, GlobalPointConnect } from "../../coords";
+import { GlobalPoint } from "../../coords";
 import { Car } from "../vehicles/Car";
 import { Vehicle } from "../vehicles/Vehicle";
+import { GlobalPointConnect } from "../../connects/globalPointConnect";
 
 export const RoadLine = (props: {
   connection: GlobalPointConnect;
   vehicles: Vehicle[];
 }) => {
+  if (true) {
+    
+  }
   return (
     <div
       style={{

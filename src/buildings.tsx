@@ -4,13 +4,13 @@ import {
   chunkPointIsEqual,
   chunkPointToString,
   GlobalPoint,
-  GlobalPointConnect,
 } from "./coords";
 import { RoadNode } from "./map/buildings/RoadNode";
 import React from "react";
 import { buildPath } from "./graph";
 import { ChunkInfo, ChunkMap } from "./map/Chunk";
 import { Vehicle } from "./map/vehicles/Vehicle";
+import { GlobalPointConnect } from "./connects/globalPointConnect";
 
 // export interface Connection {
 //   to: GlobalPoint;

@@ -5,11 +5,11 @@ import {
   chunkPointIsEqual,
   chunkPointToString,
   GlobalPoint,
-  GlobalPointConnect,
   globalPointIsEqual,
 } from "../coords";
 import { ChunkInfo } from "../map/Chunk";
 import { Tool } from "./Tool";
+import { GlobalPointConnect } from "../connects/globalPointConnect";
 
 var roadToolCache = {} as {
   from?: GlobalPoint;

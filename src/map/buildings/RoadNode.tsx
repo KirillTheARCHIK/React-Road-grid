@@ -3,7 +3,7 @@ import { BuildingProps, RoadNodeBuilding } from "../../buildings";
 import { CELL_SIZE, CELL_SIZE_WITH_ZOOM } from "../../const";
 import { ToolContext } from "../../context/ToolContext";
 import { VehiclesContext } from "../../context/VehiclesContext";
-import { GlobalPointConnect, globalPointIsEqual } from "../../coords";
+import {  globalPointIsEqual } from "../../coords";
 import { TOOLS } from "../../tools/tools";
 import { RoadLine } from "./RoadLine";
 

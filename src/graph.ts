@@ -1,5 +1,6 @@
 import { Building, findBuilding, RoadNodeBuilding } from "./buildings";
-import { GlobalPointConnect, globalPointIsEqual } from "./coords";
+import {  globalPointIsEqual } from "./coords";
+import { GlobalPointConnect } from "./connects/globalPointConnect";
 import { ChunkMap } from "./map/Chunk";
 
 export function buildPath(
