@@ -49,7 +49,11 @@ export class DeleteTool extends Tool {
       },
       (iconStyle) => {
         return <Delete style={iconStyle} />;
-      }
+      },
+      () => {
+        return <></>;
+      },
+      undefined
     );
   }
 }

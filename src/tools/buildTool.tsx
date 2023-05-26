@@ -52,7 +52,18 @@ export abstract class BuildTool extends Tool {
     ) => {},
     public building: typeof Building
   ) {
-    super(name, label, maxClicks, currentClickIndex, onClick, getIcon);
+    super(
+      name,
+      label,
+      maxClicks,
+      currentClickIndex,
+      onClick,
+      getIcon,
+      () => {
+        return <></>;
+      },
+      undefined
+    );
     this.onClick = onClick;
   }
 }

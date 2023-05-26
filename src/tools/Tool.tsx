@@ -23,6 +23,10 @@ export abstract class Tool {
     public getIcon: (iconStyle: {
       fontSize: number;
       color: string;
-    }) => ReactElement
+    }) => ReactElement,
+    public getSettings: () => ReactElement,
+    public settings: ToolSettings = new ToolSettings(),
   ) {}
 }
+
+export class ToolSettings{}

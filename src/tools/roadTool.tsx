@@ -102,9 +102,20 @@ export class RoadTool extends Tool {
       }
     }
   ) {
-    super("road", "Дорога", 2, -1, onClick, (iconStyle) => {
-      return <AddRoadOutlined style={iconStyle} />;
-    });
+    super(
+      "road",
+      "Дорога",
+      2,
+      -1,
+      onClick,
+      (iconStyle) => {
+        return <AddRoadOutlined style={iconStyle} />;
+      },
+      () => {
+        return <></>;
+      },
+      undefined
+    );
     this.onClick = onClick;
   }
 }

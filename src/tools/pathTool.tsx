@@ -101,9 +101,20 @@ export class PathTool extends Tool {
       }
     }
   ) {
-    super("path", "Маршрут", 2, -1, onClick, (iconStyle) => {
-      return <Route style={iconStyle} />;
-    });
+    super(
+      "path",
+      "Маршрут",
+      2,
+      -1,
+      onClick,
+      (iconStyle) => {
+        return <Route style={iconStyle} />;
+      },
+      () => {
+        return <></>;
+      },
+      undefined
+    );
     this.onClick = onClick;
   }
 }
